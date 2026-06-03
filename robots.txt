@@ -1,4 +1,4 @@
 User-agent: *
-Allow: /
+Allow: /DISTRICT-REGIONAL-SCREENING-PLATFORM/
 
-Sitemap: https://yourdomain.com/sitemap.xml
+Sitemap: https://tambukatechnologies.github.io/DISTRICT-REGIONAL-SCREENING-PLATFORM/sitemap.xml
