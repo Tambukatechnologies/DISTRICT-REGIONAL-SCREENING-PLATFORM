@@ -1,0 +1,608 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tambuka Technologies - Elite Sports Screening Infrastructure</title>
+    <style>
+        /* ========================================== */
+        /* CYBER SPORTS BRAND SYSTEM CONFIGURATION     */
+        /* ========================================== */
+        :root {
+            --bg-dark-core: #090d16;
+            --bg-dark-panel: #111827;
+            --bg-dark-input: #1f2937;
+            --text-bright: #f3f4f6;
+            --text-dimmed: #9ca3af;
+            --neon-blue: #38bdf8;
+            --neon-blue-glow: rgba(56, 189, 248, 0.2);
+            --emerald-green: #10b981;
+            --cyber-red: #f43f5e;
+            --gold-amber: #fbbf24;
+            --border-glow: #2563eb;
+            --panel-border: #374151;
+        }
+
+        * { box-sizing: border-box; font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; }
+
+        body {
+            background-color: var(--bg-dark-core);
+            color: var(--text-bright);
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            display: flex;
+            overflow: hidden;
+        }
+
+        /* Custom Scrollbar for sleek UI look */
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: var(--bg-dark-core); }
+        ::-webkit-scrollbar-thumb { background: var(--panel-border); border-radius: 10px; }
+
+        /* ========================================== */
+        /* AUTHENTICATION PORTAL (ADMIN REGISTER/LOGIN)*/
+        /* ========================================== */
+        .auth-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: radial-gradient(circle at center, #111c30 0%, var(--bg-dark-core) 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            overflow-y: auto;
+            padding: 40px 20px;
+        }
+
+        .auth-card {
+            background: var(--bg-dark-panel);
+            border: 1px solid #1e3a8a;
+            box-shadow: 0 0 30px rgba(37, 99, 235, 0.15);
+            border-radius: 16px;
+            padding: 35px;
+            width: 100%;
+            max-width: 500px;
+        }
+
+        /* ========================================== */
+        /* MAIN NAVIGATION SIDEBAR FRAMEWORK          */
+        /* ========================================== */
+        .sidebar {
+            width: 280px;
+            background: var(--bg-dark-panel);
+            border-right: 1px solid var(--panel-border);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .sidebar-header {
+            padding: 30px 20px;
+            border-bottom: 1px solid var(--panel-border);
+            text-align: center;
+            background: linear-gradient(to bottom, #111c30, transparent);
+        }
+
+        .sidebar-header h2 { margin: 0; color: #fff; font-size: 1.3rem; letter-spacing: 2px; }
+        .sidebar-header span { font-size: 0.75rem; color: var(--neon-blue); font-weight: bold; text-transform: uppercase; }
+
+        .nav-menu { list-style: none; padding: 20px 10px; margin: 0; display: flex; flex-direction: column; gap: 8px; }
+        .nav-btn {
+            width: 100%; padding: 14px 15px; background: none; border: 1px solid transparent;
+            color: var(--text-dimmed); text-align: left; font-size: 0.95rem; font-weight: 600;
+            border-radius: 8px; cursor: pointer; display: flex; align-items: center; gap: 12px; transition: all 0.2s;
+        }
+
+        .nav-btn:hover { background: var(--bg-dark-input); color: var(--text-bright); }
+        .nav-btn.active-tab {
+            background: rgba(56, 189, 248, 0.08);
+            color: var(--neon-blue);
+            border: 1px solid rgba(56, 189, 248, 0.3);
+            box-shadow: inset 0 0 12px rgba(56, 189, 248, 0.05);
+        }
+
+        /* ========================================== */
+        /* MAIN VIEWPORT WORKSPACE WRAPPER            */
+        /* ========================================== */
+        .workspace { flex: 1; padding: 40px; overflow-y: auto; position: relative; }
+        .view-panel { display: none; animation: viewSlide 0.3s ease-out; }
+        .view-panel.active-view { display: block; }
+
+        @keyframes viewSlide {
+            from { opacity: 0; transform: translateY(15px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .view-title { margin-top: 0; margin-bottom: 5px; font-size: 1.8rem; font-weight: 700; color: #fff; }
+        .view-subtitle { margin-top: 0; margin-bottom: 30px; font-size: 0.9rem; color: var(--text-dimmed); }
+
+        /* ========================================== */
+        /* INDUSTRIAL DESIGN CARDS & FORM ELEMENTS    */
+        /* ========================================== */
+        .grid-container { display: grid; grid-template-columns: 2fr 1fr; gap: 30px; }
+        @media(max-width: 900px) { .grid-container { grid-template-columns: 1fr; } }
+
+        .glass-card {
+            background: var(--bg-dark-panel);
+            border: 1px solid var(--panel-border);
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3);
+            position: relative;
+        }
+
+        .glass-card::before {
+            content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 3px;
+            background: linear-gradient(90deg, var(--neon-blue), transparent); border-radius: 12px 12px 0 0;
+        }
+
+        .card-title { margin-top: 0; margin-bottom: 20px; font-size: 1.2rem; color: #fff; display: flex; align-items: center; gap: 10px; }
+
+        /* Input Controls Layout mechanics */
+        .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 20px; }
+        @media(max-width: 600px) { .form-row { grid-template-columns: 1fr; } }
+        
+        .field-block { display: flex; flex-direction: column; gap: 8px; }
+        .field-block label { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px; color: var(--text-dimmed); font-weight: 700; }
+        
+        .field-block input, .field-block select {
+            background: var(--bg-dark-input); border: 1px solid var(--panel-border);
+            padding: 12px 16px; border-radius: 8px; color: #fff; font-size: 0.95rem; transition: all 0.2s;
+        }
+        .field-block input:focus, .field-block select:focus {
+            outline: none; border-color: var(--neon-blue); box-shadow: 0 0 10px var(--neon-blue-glow);
+        }
+
+        /* Cyber Profile Image Frame */
+        .photo-uploader-box {
+            width: 160px; height: 160px; border-radius: 50%; background: var(--bg-dark-input);
+            border: 2px dashed var(--panel-border); margin: 0 auto 20px auto;
+            display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden;
+            cursor: pointer; transition: all 0.2s;
+        }
+        .photo-uploader-box:hover { border-color: var(--neon-blue); background: #243249; }
+        .photo-uploader-box img { width: 100%; height: 100%; object-fit: cover; }
+        .photo-uploader-box span { font-size: 2.5rem; color: var(--text-dimmed); }
+
+        /* Buttons Core UI */
+        .action-btn {
+            background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+            color: #fff; border: none; padding: 14px 24px; border-radius: 8px;
+            font-size: 1rem; font-weight: 700; cursor: pointer; transition: all 0.2s;
+            display: inline-flex; align-items: center; justify-content: center; gap: 10px; width: 100%;
+        }
+        .action-btn:hover { transform: translateY(-1px); box-shadow: 0 4px 12px rgba(37, 99, 235, 0.4); }
+
+        /* ========================================== */
+        /* SYSTEM OPERATIONS UI CARDS & MATRICES      */
+        /* ========================================== */
+        .status-pill { padding: 4px 10px; border-radius: 20px; font-size: 0.75rem; font-weight: 800; text-transform: uppercase; display: inline-block; }
+        .status-verified { background: rgba(16, 185, 129, 0.15); color: var(--emerald-green); border: 1px solid var(--emerald-green); }
+        .status-flagged { background: rgba(244, 63, 94, 0.15); color: var(--cyber-red); border: 1px solid var(--cyber-red); }
+        .status-pending { background: rgba(251, 191, 36, 0.15); color: var(--gold-amber); border: 1px solid var(--gold-amber); }
+
+        .tier-badge { padding: 3px 8px; border-radius: 4px; font-size: 0.75rem; font-weight: bold; }
+        .tier-xi { background: #1e3a8a; color: #93c5fd; }
+        .tier-sub { background: #374151; color: var(--text-bright); }
+
+        /* Live Registry Dashboard Deck Grid */
+        .player-card-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px; }
+        .player-identity-card {
+            background: #172237; border: 1px solid var(--panel-border); border-radius: 12px;
+            padding: 20px; display: flex; gap: 15px; align-items: center; transition: all 0.2s;
+        }
+        .player-identity-card:hover { border-color: #4b5563; transform: scale(1.02); }
+        .player-card-photo { width: 65px; height: 65px; border-radius: 50%; background: var(--bg-dark-input); overflow: hidden; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; }
+        .player-card-photo img { width: 100%; height: 100%; object-fit: cover; }
+        .player-card-details h4 { margin: 0 0 4px 0; color: #fff; font-size: 1rem; }
+        .player-card-details p { margin: 2px 0; font-size: 0.8rem; color: var(--text-dimmed); }
+
+        /* Interactive Scanning Control HUD */
+        .radar-scan-box {
+            background: #0f172a; border: 1px solid #1e293b; padding: 25px; border-radius: 12px;
+            margin-top: 20px; border-left: 4px solid var(--neon-blue);
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ========================================== -->
+    <!-- SECURE MASTER ADMIN ENTRY REGISTRATION GATEWAY-->
+    <!-- ========================================== -->
+    <div class="auth-overlay" id="adminAuthGateway">
+        <div class="auth-card">
+            <div style="text-align: center; margin-bottom: 25px;">
+                <h2 style="color: var(--neon-blue); margin: 0; font-size: 1.8rem; letter-spacing: 1px;">TAMBUKA ADMIN GATEWAY</h2>
+                <p style="color: var(--text-dimmed); margin: 5px 0 0 0; font-size: 0.85rem;">Exhibition Deployment System Configuration Platform</p>
+            </div>
+            <form id="adminRegisterForm" onsubmit="event.preventDefault(); commitAdminAccountCreation();">
+                <div class="field-block" style="margin-bottom: 15px;">
+                    <label>Full Name</label>
+                    <input type="text" id="admName" value="Director Alex" required>
+                </div>
+                <div class="form-row" style="margin-bottom: 15px;">
+                    <div class="field-block">
+                        <label>Email Address</label>
+                        <input type="email" id="admEmail" value="alex@tambuka.org" required>
+                    </div>
+                    <div class="field-block">
+                        <label>Phone Contact No.</label>
+                        <input type="text" id="admPhone" value="+256 700 123456" required>
+                    </div>
+                </div>
+                <div class="form-row" style="margin-bottom: 15px;">
+                    <div class="field-block">
+                        <label>Date of Birth</label>
+                        <input type="date" id="admDOB" value="1992-06-15" required>
+                    </div>
+                    <div class="field-block">
+                        <label>Sex</label>
+                        <select id="admSex">
+                            <option value="Male">Male</option>
+                            <option value="Female">Female</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="field-block" style="margin-bottom: 25px;">
+                    <label>Create Access Security Password</label>
+                    <input type="password" id="admPassword" value="SCIENCE2026" required>
+                </div>
+                <button type="submit" class="action-btn">Initialize Secure System Environment 🔓</button>
+            </form>
+        </div>
+    </div>
+
+
+    <!-- ========================================== -->
+    <!-- MASTER NAVIGATION INTERFACE SIDEBAR        -->
+    <!-- ========================================== -->
+    <div class="sidebar">
+        <div class="sidebar-header">
+            <h2>TAMBUKA SPORTS</h2>
+            <span>Integrity Platform v3.0</span>
+        </div>
+        <ul class="nav-menu">
+            <li><button class="nav-btn active-tab" onclick="navigateViews('schoolRegView', this)">📝 School Registry Desk</button></li>
+            <li><button class="nav-btn" onclick="navigateViews('adminControlView', this)">📊 Admin Control Ledger</button></li>
+            <li><button class="nav-btn" onclick="navigateViews('matchDayScreeningView', this)">🔍 Match Screening HUD</button></li>
+        </ul>
+        <div style="margin-top: auto; padding: 20px; font-size: 0.75rem; color: var(--text-dimmed); text-align: center; border-top: 1px solid var(--panel-border);">
+            Admin Session: <span id="sidebarAdminLabel" style="color: var(--neon-blue);">Standby</span>
+        </div>
+    </div>
+
+
+    <!-- ========================================== -->
+    <!-- PRINCIPAL SYSTEM OPERATION PANELS          -->
+    <!-- ========================================== -->
+    <div class="workspace">
+
+        <!-- PANEL 1: SCHOOL REGISTRATION FORM -->
+        <div id="schoolRegView" class="view-panel active-view">
+            <h1 class="view-title">School Registration & Enrollment Terminal</h1>
+            <p class="view-subtitle">Inbound player roster ingestion channel for youth athletics mapping parameters.</p>
+            
+            <div class="grid-container">
+                <div class="glass-card">
+                    <div class="card-title">📋 Baller Profiling Data Form</div>
+                    <form id="playerEnrollmentForm" onsubmit="event.preventDefault(); registerBallerToMemory();">
+                        <div class="form-row">
+                            <div class="field-block">
+                                <label>Baller Full Name</label>
+                                <input type="text" id="pName" placeholder="e.g., Emmanuel Oloya" required>
+                            </div>
+                            <div class="field-block">
+                                <label>School / Institution</label>
+                                <input type="text" id="pSchool" placeholder="e.g., St. Mary's Kitende" required>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="field-block">
+                                <label>Date of Birth</label>
+                                <input type="date" id="pDOB" value="2012-05-14" onchange="autoTrackDivision()" required>
+                            </div>
+                            <div class="field-block">
+                                <label>Age Group Division (Auto-Targeted)</label>
+                                <select id="pDivision">
+                                    <option value="U15">Under 15 (U15)</option>
+                                    <option value="U17">Under 17 (U17)</option>
+                                    <option value="U19">Under 19 (U19)</option>
+                                    <option value="U20">Under 20 (U20)</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="field-block">
+                                <label>Squad Hierarchy Assignment</label>
+                                <select id="pTier">
+                                    <option value="XI">Starting XI Lineup Baller</option>
+                                    <option value="SUB">Substitute Bench Roster</option>
+                                </select>
+                            </div>
+                            <div class="field-block">
+                                <label>System Upload Routing</label>
+                                <input type="file" accept="image/*" onchange="processAvatarUpload(this)" style="padding: 8px;">
+                            </div>
+                        </div>
+                        <button type="submit" class="action-btn" style="background: linear-gradient(135deg, #059669 0%, #047857 100%);">Route Player to Admin Ledger 🚀</button>
+                    </form>
+                </div>
+
+                <div class="glass-card" style="text-align: center; display: flex; flex-direction: column; justify-content: center;">
+                    <div class="card-title" style="justify-content: center;">Live Profile Mirror</div>
+                    <div class="photo-uploader-box" id="avatarPreviewBox"><span>👤</span></div>
+                    <h3 id="mirrorName" style="margin: 10px 0 5px 0;">Awaiting Input</h3>
+                    <p id="mirrorSchool" style="margin: 0; font-size: 0.85rem; color: var(--text-dimmed);">No School Mapped</p>
+                    <div id="mirrorDivision" class="status-pill status-pending" style="margin-top: 15px; width: fit-content; align-self: center;">U15 Mapped</div>
+                </div>
+            </div>
+        </div>
+
+
+        <!-- PANEL 2: ADMIN MANAGEMENT CENTRAL LEDGER -->
+        <div id="adminControlView" class="view-panel">
+            <h1 class="view-title">Admin Operational Verification Center</h1>
+            <p class="view-subtitle">Review incoming school rosters, analyze data parameters, and toggle team sheets.</p>
+            
+            <div class="glass-card" style="margin-bottom: 30px;">
+                <div class="card-title">📋 Active Roster Breakdown Matrix</div>
+                <div class="player-card-grid" id="adminMasterRosterDisplay">
+                    <!-- Cards injection loop -->
+                </div>
+            </div>
+        </div>
+
+
+        <!-- PANEL 3: MATCH DAY SCREENING INTERFACE -->
+        <div id="matchDayScreeningView" class="view-panel">
+            <h1 class="view-title">Match Day Bio-Screening Terminal HUD</h1>
+            <p class="view-subtitle">Real-time age fraud identification matrix and cross-reference logic verification tool.</p>
+            
+            <div class="glass-card">
+                <div class="card-title">🔍 Verification Targeting System Router</div>
+                <div class="form-row">
+                    <div class="field-block">
+                        <label>Target Active Roster Profile</label>
+                        <select id="screeningTargetSelector" onchange="runLiveScreeningAnalysis()">
+                            <!-- Managed by JS arrays -->
+                        </select>
+                    </div>
+                    <div class="field-block">
+                        <label>Exhibition Fraud Audit Tools</label>
+                        <div style="display: flex; gap: 20px; align-items: center; height: 100%;">
+                            <label style="cursor: pointer; font-weight: bold; color: var(--cyber-red); display: flex; align-items: center; gap: 8px;">
+                                <input type="checkbox" id="flagAgeMismatch" onchange="runLiveScreeningAnalysis()"> Flag Age Discrepancy Risk
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="radar-scan-box" id="radarConsoleLog">
+                    No profile actively loaded into scanning terminal matrix fields. Select a target configuration above.
+                </div>
+
+                <div style="display: flex; gap: 20px; margin-top: 25px;">
+                    <button class="action-btn" style="background: var(--emerald-green);" onclick="executeScreeningVerdict('VERIFIED')">Approve Roster Access Clear ✅</button>
+                    <button class="action-btn" style="background: var(--cyber-red);" onclick="executeScreeningVerdict('FLAGGED')">Trigger Age Violation Lockout 🚨</button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- ========================================== -->
+    <!-- SECURE INTERACTION JAVASCRIPT LAYER        -->
+    <!-- ========================================== -->
+    <script>
+        // Global Local Storage Context Array
+        let dynamicTournamentDatabase = [];
+        let currentAdmin = null;
+
+        // Form Mirror Text Synchronization
+        document.getElementById('pName').addEventListener('input', (e) => {
+            document.getElementById('mirrorName').textContent = e.target.value || "Awaiting Input";
+        });
+        document.getElementById('pSchool').addEventListener('input', (e) => {
+            document.getElementById('mirrorSchool').textContent = e.target.value || "No School Mapped";
+        });
+
+        function autoTrackDivision() {
+            const dobValue = document.getElementById('pDOB').value;
+            if(!dobValue) return;
+            
+            const birthYear = new Date(dobValue).getFullYear();
+            const competitionYear = 2026; 
+            const calcAge = competitionYear - birthYear;
+
+            let targetDiv = "U20";
+            if (calcAge <= 15) targetDiv = "U15";
+            else if (calcAge <= 17) targetDiv = "U17";
+            else if (calcAge <= 19) targetDiv = "U19";
+
+            document.getElementById('pDivision').value = targetDiv;
+            document.getElementById('mirrorDivision').textContent = `${targetDiv} Mapped (Age: ${calcAge})`;
+        }
+
+        // FileReader Photo Base64 Buffer Converter
+        let runningAvatarBuffer = "👤";
+        function processAvatarUpload(element) {
+            if(element.files && element.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    runningAvatarBuffer = e.target.result;
+                    document.getElementById('avatarPreviewBox').innerHTML = `<img src="${runningAvatarBuffer}" alt="Preview">`;
+                };
+                reader.readAsDataURL(element.files[0]);
+            }
+        }
+
+        // Commits Admin Account Setup Context View States
+        function commitAdminAccountCreation() {
+            currentAdmin = {
+                name: document.getElementById('admName').value,
+                email: document.getElementById('admEmail').value,
+                phone: document.getElementById('admPhone').value,
+                dob: document.getElementById('admDOB').value,
+                sex: document.getElementById('admSex').value
+            };
+            
+            document.getElementById('sidebarAdminLabel').textContent = currentAdmin.name;
+            document.getElementById('adminAuthGateway').style.display = "none";
+        }
+
+        // View Router Navigation
+        function navigateViews(targetPanelId, activeBtnElement) {
+            document.querySelectorAll('.view-panel').forEach(p => p.classList.remove('active-view'));
+            document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active-tab'));
+            
+            document.getElementById(targetPanelId).classList.add('active-view');
+            activeBtnElement.classList.add('active-tab');
+
+            if(targetPanelId === 'adminControlView') generateAdminDashboardLedgers();
+            if(targetPanelId === 'matchDayScreeningView') populateScreeningDropdownRouter();
+        }
+
+        // Adds player profiles safely to active registry tracking maps
+        function registerBallerToMemory() {
+            const record = {
+                uid: "ATH-" + Math.floor(100000 + Math.random() * 900000),
+                name: document.getElementById('pName').value,
+                school: document.getElementById('pSchool').value,
+                dob: document.getElementById('pDOB').value,
+                division: document.getElementById('pDivision').value,
+                tier: document.getElementById('pTier').value,
+                avatar: runningAvatarBuffer,
+                status: "PENDING"
+            };
+
+            dynamicTournamentDatabase.unshift(record);
+            alert(`SUCCESS: Registered ${record.name} into tournament storage pipeline structure array data tables.`);
+            
+            // Clean active forms safely
+            document.getElementById('playerEnrollmentForm').reset();
+            document.getElementById('avatarPreviewBox').innerHTML = "<span>👤</span>";
+            runningAvatarBuffer = "👤";
+            document.getElementById('mirrorName').textContent = "Awaiting Input";
+            document.getElementById('mirrorSchool').textContent = "No School Mapped";
+            autoTrackDivision();
+        }
+
+        // Compiles Admin Control Room Layout View Panels
+        function generateAdminDashboardLedgers() {
+            const viewport = document.getElementById('adminMasterRosterDisplay');
+            viewport.innerHTML = "";
+
+            if(dynamicTournamentDatabase.length === 0) {
+                viewport.innerHTML = `<div style="grid-column: 1/-1; text-align: center; padding: 40px; color: var(--text-dimmed);">No incoming school rosters populated yet. Submit profiles from the Registry Desk view window panel.</div>`;
+                return;
+            }
+
+            dynamicTournamentDatabase.forEach(player => {
+                const card = document.createElement('div');
+                card.className = "player-identity-card";
+                
+                let imageBlock = player.avatar.startsWith("data:") 
+                    ? `<img src="${player.avatar}" alt="Photo">` 
+                    : `<span>👤</span>`;
+
+                let statusClass = "status-pending";
+                if(player.status === "VERIFIED") statusClass = "status-verified";
+                if(player.status === "FLAGGED") statusClass = "status-flagged";
+
+                let tierLabel = player.tier === "XI" ? "First XI Starter" : "Substitute Roster";
+                let tierClass = player.tier === "XI" ? "tier-xi" : "tier-sub";
+
+                card.innerHTML = `
+                    <div class="player-card-photo">${imageBlock}</div>
+                    <div class="player-card-details">
+                        <h4>${player.name}</h4>
+                        <p style="color: #fff; font-weight: 600;">${player.school}</p>
+                        <p>DOB: ${player.dob} | <span class="tier-badge ${tierClass}">${tierLabel}</span></p>
+                        <div style="margin-top: 8px;">
+                            <span class="status-pill ${statusClass}">${player.status}</span>
+                            <span style="font-size: 0.8rem; margin-left: 10px; color: var(--neon-blue); font-weight: bold;">${player.division}</span>
+                        </div>
+                    </div>
+                `;
+                viewport.appendChild(card);
+            });
+        }
+
+        // Match Day Screening Core Mechanics Routing Populators
+        function populateScreeningDropdownRouter() {
+            const selector = document.getElementById('screeningTargetSelector');
+            selector.innerHTML = "";
+
+            const pendingRecords = dynamicTournamentDatabase.filter(p => p.status === "PENDING");
+
+            if(pendingRecords.length === 0) {
+                selector.innerHTML = `<option value="">No profiles waiting in secure clearance routing channels.</option>`;
+                runLiveScreeningAnalysis();
+                return;
+            }
+
+            pendingRecords.forEach(p => {
+                selector.innerHTML += `<option value="${p.uid}">${p.name} — [${p.school}]</option>`;
+            });
+            runLiveScreeningAnalysis();
+        }
+
+        // Live Realtime Security Console Logic Simulation Framework Outputs
+        function runLiveScreeningAnalysis() {
+            const targetUid = document.getElementById('screeningTargetSelector').value;
+            const logBox = document.getElementById('radarConsoleLog');
+            const forcedFlag = document.getElementById('flagAgeMismatch').checked;
+
+            if(!targetUid) {
+                logBox.innerHTML = `⚠️ STANDBY: Roster screening engine queue registers empty. Add more candidates to access data metrics.`;
+                return;
+            }
+
+            const targetRecord = dynamicTournamentDatabase.find(p => p.uid === targetUid);
+            
+            if(forcedFlag) {
+                logBox.innerHTML = `
+                    <span style="color: var(--cyber-red); font-weight: bold;">🚨 CRITICAL SYSTEM ANOMALY DETECTED:</span><br>
+                    Target Profile: ${targetRecord.name} (${targetRecord.school})<br>
+                    Analysis Parameters: Mapped birth date record (${targetRecord.dob}) conflicts with regional school admission registry profiles. System flags extreme biometric mismatch indicators.
+                `;
+            } else {
+                logBox.innerHTML = `
+                    <span style="color: var(--emerald-green); font-weight: bold;">⚡ CORE SCREENING ANALYTICS RUNNING:</span><br>
+                    Target Mapped: ${targetRecord.name} | Division: ${targetRecord.division} | Tier: ${targetRecord.tier === "XI" ? "Starting XI" : "Substitute"}<br>
+                    Security Metrics: Digital birth registration verification matches across districts. Clear pattern matching profile verified. Ready for deployment status action keys.
+                `;
+            }
+        }
+
+        // Executing clearance verdict logs
+        function executeScreeningVerdict(finalVerdict) {
+            const targetUid = document.getElementById('screeningTargetSelector').value;
+            if(!targetUid) return;
+
+            const record = dynamicTournamentDatabase.find(p => p.uid === targetUid);
+            const forcedFlag = document.getElementById('flagAgeMismatch').checked;
+
+            if(forcedFlag || finalVerdict === 'FLAGGED') {
+                record.status = "FLAGGED";
+                alert(`SECURITY LOCK TRIGGERED: ${record.name} flagged as fraud vector risk and blacklisted.`);
+            } else {
+                record.status = "VERIFIED";
+                alert(`ROSTER EXPEDITION SETTLED: ${record.name} validated clear for active tournament deployment maps.`);
+            }
+
+            document.getElementById('flagAgeMismatch').checked = false;
+            populateScreeningDropdownRouter();
+        }
+
+        // System Initialization Lifecycle Hooks with Mock Showcase Arrays
+        window.onload = function() {
+            dynamicTournamentDatabase = [
+                { uid: "ATH-928134", name: "Derrick Wasswa", school: "Buddo SS", dob: "2011-09-12", division: "U15", tier: "XI", avatar: "👤", status: "VERIFIED" },
+                { uid: "ATH-441092", name: "Ivan Kakooza", school: "Kibuli Secondary", dob: "2007-03-24", division: "U19", tier: "SUB", avatar: "👤", status: "PENDING" }
+            ];
+            autoTrackDivision();
+        }
+    </script>
+</body>
+</html>
