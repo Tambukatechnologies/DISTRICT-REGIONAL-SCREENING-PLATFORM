@@ -329,6 +329,14 @@
                                 <label>Baller Full Name</label>
                                 <input type="text" id="pName" placeholder="e.g., Emmanuel Oloya" required>
                             </div>
+                            <!-- Insert this inside your <form id="playerEnrollmentForm"> -->
+<div class="form-group">
+    <label for="pSchool" style="color: var(--neon-blue); font-weight: bold; display: block; margin-bottom: 5px;">
+        🏫 Educational Institution / School Name:
+    </label>
+    <input type="text" id="pSchool" placeholder="Enter full school name" required 
+           style="width: 100%; padding: 10px; background: var(--bg-dark); border: 1px solid var(--panel-border); color: #fff; border-radius: 4px;">
+</div>
                             <div class="field-block">
                                 <label>Target Age Division</label>
                                 <select id="pDivision" onchange="enforceDivisionAgeGuide()">
