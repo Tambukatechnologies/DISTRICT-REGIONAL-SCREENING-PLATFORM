@@ -163,6 +163,43 @@
             gap: 15px;
         }
 
+        /* Lineup Matrix Selector Styling */
+        .lineup-matrix-box {
+            background: var(--bg-dark);
+            border: 1px solid var(--panel-border);
+            border-radius: 6px;
+            padding: 15px;
+            margin-bottom: 20px;
+        }
+
+        .lineup-grid-four {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+            margin-top: 8px;
+        }
+
+        .match-slot {
+            background: var(--panel-bg);
+            border: 1px solid var(--panel-border);
+            padding: 8px;
+            border-radius: 4px;
+            text-align: center;
+        }
+
+        .match-slot span {
+            display: block;
+            font-size: 0.75rem;
+            color: var(--neon-blue);
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        .match-slot select {
+            padding: 6px;
+            font-size: 0.8rem;
+        }
+
         /* Local Ledger Grid Layouts */
         .identity-grid-matrix {
             display: grid;
@@ -234,9 +271,7 @@
             color: #fff;
         }
 
-        /* ======================================================== */
-        /* OVERSIGHT MATRICES AND TABULAR STRUCTURE DESIGN ELEMENTS  */
-        /* ======================================================== */
+        /* Oversight Matrices and Tabular Structure Design Elements */
         .table-scroller-container {
             width: 100%;
             overflow-x: auto;
@@ -317,6 +352,18 @@
             color: var(--text-dimmed);
         }
 
+        .lineup-inline-badge {
+            display: inline-block;
+            font-size: 0.7rem;
+            background: rgba(0, 242, 254, 0.1);
+            color: var(--neon-blue);
+            border: 1px solid rgba(0, 242, 254, 0.2);
+            padding: 1px 4px;
+            border-radius: 3px;
+            margin-right: 2px;
+            margin-top: 2px;
+        }
+
         /* Matchday Verification Array Elements */
         .screening-console-panel {
             display: grid;
@@ -381,7 +428,6 @@
             <p style="color: var(--text-dimmed);">Multi-Tenant Structural Age Verification & Biometric Match Ledger Engine</p>
         </header>
 
-        <!-- Access Guard Wrapper -->
         <div id="adminAuthGateway" class="view-panel active-view" style="margin-bottom:0;">
             <div class="auth-lockscreen">
                 <h3 style="color: var(--neon-blue); margin-bottom:10px;">🔐 Dynamic Verification Node Entry</h3>
@@ -392,7 +438,6 @@
             </div>
         </div>
 
-        <!-- Master Operations Base Interface -->
         <div id="masterOperationsBase" style="display: none;">
             
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
@@ -400,7 +445,6 @@
                 <button style="background:transparent; border:1px solid var(--cyber-red); color:var(--cyber-red); padding:4px 10px; border-radius:4px; cursor:pointer; font-size:0.8rem;" onclick="location.reload()">Terminate Session</button>
             </div>
 
-            <!-- Tab Row Arrays -->
             <div class="navigation-bar">
                 <button class="nav-btn active-tab" onclick="navigateViews('playerEnrollmentView', this)">1. Athlete Ingestion Form</button>
                 <button class="nav-btn" onclick="navigateViews('adminControlView', this)">2. Local Tenant Ledger</button>
@@ -408,7 +452,6 @@
                 <button class="nav-btn" onclick="navigateViews('supervisorOversightView', this)">4. Central Oversight Board</button>
             </div>
 
-            <!-- View 1: Player Enrollment -->
             <div id="playerEnrollmentView" class="view-panel active-view">
                 <h3 style="margin-bottom: 20px; color: #fff; border-bottom: 1px solid var(--panel-border); padding-bottom: 10px;">📝 Student-Athlete Structural Profiles Registration</h3>
                 
@@ -422,6 +465,40 @@
                         <div class="form-group">
                             <label for="pSchool" style="color: var(--neon-blue); font-weight: bold;">🏫 Educational Institution / School Name:</label>
                             <input type="text" id="pSchool" placeholder="Enter full school name" required>
+                        </div>
+
+                        <div class="lineup-matrix-box">
+                            <label style="color: var(--neon-green); font-weight: bold; font-size: 0.9rem; display: block;">📋 Competition Match Lineup Parameters (4 Match Stream):</label>
+                            <div class="lineup-grid-four">
+                                <div class="match-slot">
+                                    <span>Match 1</span>
+                                    <select id="pMatch1" required>
+                                        <option value="Starter">Starting Lineup</option>
+                                        <option value="Substitute">Substitute</option>
+                                    </select>
+                                </div>
+                                <div class="match-slot">
+                                    <span>Match 2</span>
+                                    <select id="pMatch2" required>
+                                        <option value="Starter">Starting Lineup</option>
+                                        <option value="Substitute">Substitute</option>
+                                    </select>
+                                </div>
+                                <div class="match-slot">
+                                    <span>Match 3</span>
+                                    <select id="pMatch3" required>
+                                        <option value="Starter">Starting Lineup</option>
+                                        <option value="Substitute">Substitute</option>
+                                    </select>
+                                </div>
+                                <div class="match-slot">
+                                    <span>Match 4</span>
+                                    <select id="pMatch4" required>
+                                        <option value="Starter">Starting Lineup</option>
+                                        <option value="Substitute">Substitute</option>
+                                    </select>
+                                </div>
+                            </div>
                         </div>
 
                         <div class="form-row">
@@ -442,7 +519,7 @@
                         <div class="form-row">
                             <div class="form-group">
                                 <label for="pTier">Competition Classification Tier:</label>
-                                <select id="pTier" id="pTier">
+                                <select id="pTier">
                                     <option value="Tier-1 (Elite)">Tier-1 (Elite National Division)</option>
                                     <option value="Tier-2 (Regional)">Tier-2 (Regional District Stream)</option>
                                 </select>
@@ -456,7 +533,6 @@
                         <button type="submit" class="action-btn" style="width: 100%; margin-top: 10px;">Commit Student Profile Node to Memory</button>
                     </form>
 
-                    <!-- Realtime Intercept Sandbox View Mirror -->
                     <div style="background: var(--bg-dark); border: 1px solid var(--panel-border); padding: 20px; border-radius: 8px; height: fit-content; text-align: center;">
                         <h4 style="font-size: 0.8rem; color: var(--text-dimmed); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 15px;">Live Cryptographic Encryption Mirror</h4>
                         <div id="avatarPreviewBox" style="width: 100px; height: 100px; background: var(--panel-bg); border-radius: 50%; margin: 0 auto 15px; display: flex; align-items: center; justify-content: center; font-size: 3rem; border: 2px solid var(--panel-border); overflow: hidden;">
@@ -472,7 +548,6 @@
                 </div>
             </div>
 
-            <!-- View 2: Local Ledger Grid Matrix -->
             <div id="adminControlView" class="view-panel">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; border-bottom: 1px solid var(--panel-border); padding-bottom: 10px;">
                     <div>
@@ -482,11 +557,9 @@
                     <button class="action-btn" style="background: linear-gradient(135deg, #059669, #10b981);" onclick="uplinkRosterToCentralAdmin()">Uplink Local Roster to Central System</button>
                 </div>
                 <div id="adminMasterRosterDisplay" class="identity-grid-matrix">
-                    <!-- Cards populate dynamically -->
-                </div>
+                    </div>
             </div>
 
-            <!-- View 3: Match Day Biometric Screening Panel -->
             <div id="matchDayScreeningView" class="view-panel">
                 <h3 style="margin-bottom: 10px; color: #fff;">🏟️ Match-Day Field Screening Verification Terminal</h3>
                 <p style="color: var(--text-dimmed); font-size: 0.85rem; border-bottom: 1px solid var(--panel-border); padding-bottom: 15px;">Interface hardware scanners with dynamic encryption memory to verify athlete eligibility criteria in real-time.</p>
@@ -494,8 +567,7 @@
                 <div style="margin-top: 20px; background: var(--bg-dark); padding: 15px; border-radius: 6px; border: 1px solid var(--panel-border);">
                     <label for="screeningTargetSelector" style="display:block; margin-bottom:8px; font-size:0.85rem; color:var(--text-dimmed);">Target Athlete for Profile Evaluation:</label>
                     <select id="screeningTargetSelector" style="width:100%; padding:12px; background:var(--panel-bg); border:1px solid var(--panel-border); color:#fff; border-radius:6px;" onchange="runLiveScreeningAnalysis()">
-                        <!-- Dropdown selections fill dynamically -->
-                    </select>
+                        </select>
                 </div>
 
                 <div class="screening-console-panel">
@@ -523,12 +595,10 @@
                 </div>
             </div>
 
-            <!-- View 4: Central Supervisor Table Oversight -->
             <div id="supervisorOversightView" class="view-panel">
                 <h3 style="margin-bottom: 5px; color: #fff;">📡 Master Competition Oversight Feed (Simulated Central Board)</h3>
                 <p style="color: var(--text-dimmed); font-size: 0.85rem; margin-bottom: 20px;">Simulates global federation view receiving submissions from distinct districts concurrently.</p>
 
-                <!-- Secure Unlock Protocol Base -->
                 <div id="supervisorLockContainer" class="auth-lockscreen" style="background: var(--bg-dark); border: 1px solid var(--panel-border); border-radius: 8px;">
                     <h4 style="color: var(--gold-amber); margin-bottom: 5px;">🔒 Multi-Tenant Supervisor Security Decryption Matrix</h4>
                     <p style="color: var(--text-dimmed); font-size: 0.8rem; max-width: 450px; margin-bottom: 15px;">Accessing cross-district amalgamated streams requires confirmation of supreme administrative credentials clearance metrics.</p>
@@ -536,9 +606,6 @@
                     <button class="action-btn" style="background: var(--gold-amber);" onclick="unlockSupervisorOversightFeed()">Unlock Global Stream Feed</button>
                 </div>
 
-                <!-- ======================================================== -->
-                <!-- REDESIGNED STRUCTURE: ALIGNED TABULAR DATABASE LAYOUT      -->
-                <!-- ======================================================== -->
                 <div class="table-scroller-container">
                     <table class="federation-ledger-table" id="centralFederationAdminFeed" style="display: none;">
                         <thead>
@@ -551,19 +618,14 @@
                             </tr>
                         </thead>
                         <tbody id="federationTableBody">
-                            <!-- Dynamic rows populate explicitly here -->
-                        </tbody>
+                            </tbody>
                     </table>
                 </div>
-                <!-- ======================================================== -->
-
             </div>
         </div>
     </div>
 
-    <!-- JavaScript Data Foundations & Application Flow System Engines -->
     <script>
-        // Allocation Mapping Keyspaces
         const AUTHORIZED_CRYPTO_TENANTS = {
             "RUKIGA_POOL_26": "Rukiga District Pool",
             "KAMPALA_HUB_26": "Kampala Central Hub"
@@ -575,7 +637,6 @@
             "Under-19": 19
         };
 
-        // Isolated Database Simulation Collections
         let currentAdmin = null;
         let isSupervisorAuthenticated = false;
         let runningAvatarBuffer = "👤";
@@ -587,7 +648,6 @@
             "Kampala Central Hub": []
         };
 
-        // Federation Master Mock Dataset Array Structures
         let masterFederationAdminDatabase = [
             {
                 uid: "ATH-849204",
@@ -601,7 +661,8 @@
                 ageDetected: 17,
                 faceMatchScore: 94,
                 printHash: "FPRINT-RUK-49",
-                status: "FLAGGED"
+                status: "FLAGGED",
+                lineups: ["Starter", "Starter", "Substitute", "Starter"]
             },
             {
                 uid: "ATH-302948",
@@ -615,11 +676,11 @@
                 ageDetected: 37,
                 faceMatchScore: 99,
                 printHash: "FPRINT-RUK-88",
-                status: "FLAGGED"
+                status: "FLAGGED",
+                lineups: ["Substitute", "Substitute", "Starter", "Substitute"]
             }
         ];
 
-        // Handshake Ingress Route
         function executeTenantHandshake() {
             const secret = document.getElementById('tenantSecretKey').value.trim();
             if (AUTHORIZED_CRYPTO_TENANTS[secret]) {
@@ -647,7 +708,6 @@
             const file = input.files[0];
             if (!file) return;
 
-            // Generate synthetic cryptographic tracking hash strings
             currentGeneratedHash = "SHA256-" + Math.random().toString(16).substring(2, 10).toUpperCase() + Math.random().toString(16).substring(2, 4).toUpperCase();
             document.getElementById('mirrorHash').textContent = currentGeneratedHash;
 
@@ -667,7 +727,6 @@
             return true;
         }
 
-        // Nav Controllers Matrix
         function navigateViews(targetViewId, clickedBtn) {
             if (!passcheckIdentityGuard()) return;
 
@@ -686,7 +745,6 @@
             }
         }
 
-        // Data Entry Record Generator Pipeline
         function registerBallerToMemory() {
             if (!passcheckIdentityGuard()) return;
 
@@ -695,6 +753,14 @@
             const division = document.getElementById('pDivision').value;
             const dob = document.getElementById('pDOB').value;
             const tier = document.getElementById('pTier').value;
+
+            // Retain values selected inside the 4 Match parameters dropdown matrix box
+            const lineups = [
+                document.getElementById('pMatch1').value,
+                document.getElementById('pMatch2').value,
+                document.getElementById('pMatch3').value,
+                document.getElementById('pMatch4').value
+            ];
 
             if (!school) {
                 alert("⚠ VALIDATION ERROR: Please enter a valid School Name.");
@@ -717,7 +783,8 @@
                 ageDetected: calculatedAge,
                 faceMatchScore: faceScoreSimulated,
                 printHash: "FPRINT-" + currentAdmin.tenant.substring(0,3).toUpperCase() + "-" + Math.floor(10 + Math.random() * 90),
-                status: "PENDING"
+                status: "PENDING",
+                lineups: lineups
             };
 
             tenantDatabases[currentAdmin.tenant].push(newPlayerNode);
@@ -752,6 +819,12 @@
                         <p>School: <strong>${player.school}</strong></p>
                         <p>ID: <strong style="color:var(--neon-blue); font-family:monospace;">${player.uid}</strong></p>
                         <p>Division: <span class="tier-badge tier-xi">${player.division}</span></p>
+                        <div style="margin-top:4px;">
+                            <span class="lineup-inline-badge">M1: ${player.lineups[0]}</span>
+                            <span class="lineup-inline-badge">M2: ${player.lineups[1]}</span><br>
+                            <span class="lineup-inline-badge">M3: ${player.lineups[2]}</span>
+                            <span class="lineup-inline-badge">M4: ${player.lineups[3]}</span>
+                        </div>
                         <p style="margin-top:5px;">Status: <span class="status-pill status-${player.status.toLowerCase()}">${player.status}</span></p>
                     </div>
                 </div>
@@ -767,7 +840,6 @@
 
             localRecords.forEach(player => {
                 if (!masterFederationAdminDatabase.some(m => m.uid === player.uid)) {
-                    // Map active home district location tag parameters upon uplink pass
                     masterFederationAdminDatabase.push({
                         ...player,
                         districtContext: currentAdmin.tenant
@@ -790,18 +862,14 @@
 
             isSupervisorAuthenticated = true;
             document.getElementById('supervisorLockContainer').style.display = "none";
-            document.getElementById('centralFederationAdminFeed').style.display = "table"; // Set container visualization mode to table format grid
+            document.getElementById('centralFederationAdminFeed').style.display = "table";
             renderCentralFederationStream();
         }
 
-        // ========================================== 
-        // RECONFIGURED SUP FEED LEDGER RENDER PIPELINE 
-        // ========================================== 
         function renderCentralFederationStream() {
             if (!isSupervisorAuthenticated) return;
             const tableBody = document.getElementById('federationTableBody');
 
-            // Collate baseline vectors with real-time field state objects
             let compiledMatrix = [...masterFederationAdminDatabase];
             Object.keys(tenantDatabases).forEach(key => {
                 tenantDatabases[key].forEach(p => {
@@ -839,6 +907,10 @@
                         </td>
                         <td>
                             <span class="table-school-tag">🏫 ${player.school}</span>
+                            <div style="margin-top: 4px; font-size:0.75rem;">
+                                <span style="color:var(--text-dimmed);">Lineups:</span> 
+                                <span style="color:#fff;">${player.lineups ? player.lineups.join(' | ') : 'N/A'}</span>
+                            </div>
                         </td>
                         <td>
                             <span style="color: var(--text-main); font-size: 0.85rem;">📍 ${currentDistrict}</span>
@@ -858,7 +930,6 @@
             }).join('');
         }
 
-        // Match Day Screening Logic
         function populateScreeningSelectorDropdown() {
             const selector = document.getElementById('screeningTargetSelector');
             const localRecords = tenantDatabases[currentAdmin.tenant] || [];
@@ -898,6 +969,7 @@
             logBox.innerHTML = `
                 🛰️ <strong style="color:#fff;">TARGET ACQUIRED:</strong> ${baller.name.toUpperCase()} (${baller.uid})<br>
                 🏫 <strong>SCHOOL INDEX:</strong> ${baller.school}<br>
+                📋 <strong>LINEUP HISTORY:</strong> M1: ${baller.lineups[0]} | M2: ${baller.lineups[1]} | M3: ${baller.lineups[2]} | M4: ${baller.lineups[3]}<br>
                 🧬 <strong>STRUCTURE ANALYSIS:</strong> Registered Target Division: ${baller.division} (Max Threshold: ${ageLimit} Years Old)<br>
                 📅 <strong>TEMPORAL DATA MATCH:</strong> Calculated True Competition Age: <span style="color: ${identityFlagged ? 'var(--cyber-red)' : 'var(--emerald-green)'}; font-weight:bold;">${baller.ageDetected} Years Old</span><br>
                 📸 <strong>FACIAL RECOGNITION ARRAY:</strong> Document Verification Confidence: <strong style="color:var(--neon-blue);">${baller.faceMatchScore}% Match</strong> against ID Scan Matrix.<br>
