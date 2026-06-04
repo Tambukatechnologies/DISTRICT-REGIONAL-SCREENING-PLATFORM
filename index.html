@@ -610,3 +610,18 @@
     </script>
 </body>
 </html>
+<section class="card camera-section">
+  <h2>Biometric Face Verification</h2>
+  <p class="subtitle">Use your phone's camera to match the athlete's face.</p>
+  
+  <div class="video-container">
+    <video id="webcam" autoplay playsinline muted></video>
+    <canvas id="overlay"></canvas>
+  </div>
+  
+  <div class="camera-controls">
+    <button type="button" id="startCamBtn" class="btn-btn btn-secondary">Open Camera</button>
+    <button type="button" id="captureBtn" class="btn-btn" disabled>Scan & Verify Face</button>
+  </div>
+  <div id="scanStatus" class="scan-status">Camera status: Idle</div>
+</section>
