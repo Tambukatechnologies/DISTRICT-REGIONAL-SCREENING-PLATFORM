@@ -418,10 +418,11 @@
             font-size: 3.5rem;
             margin-bottom: 15px;
             transition: all 0.5s ease;
+            user-select: none;
         }
 
         @keyframes pulseBiometrics {
-            0 { transform: scale(1); opacity: 1; }
+            0% { transform: scale(1); opacity: 1; }
             50% { transform: scale(1.1); opacity: 0.6; }
             100% { transform: scale(1); opacity: 1; }
         }
@@ -668,7 +669,6 @@
         let runningAvatarBuffer = "👤";
         let currentGeneratedHash = "No File Seeded";
         
-        // Track the current prints during interactions
         let registeredFingerprintHash = ""; 
         let matchDayScannedPrintHash = ""; 
 
@@ -680,7 +680,7 @@
         let masterFederationAdminDatabase = [
             {
                 uid: "ATH-849204",
-                name: "asimwe derick",
+                name: "Asimwe Derick",
                 school: "Rukiga High School",
                 dob: "2009-03-14",
                 division: "Under-15",
@@ -688,14 +688,14 @@
                 avatar: "👤",
                 docHash: "SHA256-E9F2A1C4",
                 ageDetected: 17,
-                faceMatchScore: 94,
                 printHash: "FPRINT-RUK-49",
                 status: "FLAGGED",
+                tenantSource: "Rukiga District Pool",
                 lineups: ["Starter", "Starter", "Substitute", "Starter"]
             },
             {
                 uid: "ATH-302948",
-                name: "AMANYA JOAN",
+                name: "Amanya Joan",
                 school: "Muhanga Progress Academy",
                 dob: "1989-11-23",
                 division: "Under-19",
@@ -703,9 +703,9 @@
                 avatar: "👤",
                 docHash: "SHA256-4B8D10E2",
                 ageDetected: 37,
-                faceMatchScore: 99,
                 printHash: "FPRINT-RUK-88",
                 status: "FLAGGED",
+                tenantSource: "Rukiga District Pool",
                 lineups: ["Substitute", "Substitute", "Starter", "Substitute"]
             }
         ];
@@ -723,6 +723,7 @@
                 
                 autoTrackDivision();
                 renderLocalLedgerGrid();
+                updateScreeningSelectors();
             } else {
                 alert("🚨 SECURITY ALERT:\n\nCryptographic handshake aborted. Provided token structure does not map to recognized allocation frames.");
             }
@@ -734,369 +735,305 @@
         }
 
         function processLocalAvatarBuffer(input) {
-            const file = input.files[0];
-            if (!file) return;
+            if (input.files && input.files[0]) {
+                const file = input.files[0];
+                currentGeneratedHash = "SHA256-" + Math.random().toString(16).substring(2, 10).toUpperCase();
+                document.getElementById('mirrorHash').textContent = currentGeneratedHash;
 
-            currentGeneratedHash = "SHA256- " + Math.random().toString(16).substring(2, 10).toUpperCase();
-            document.getElementById('mirrorHash').textContent = currentGeneratedHash;
-
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                runningAvatarBuffer = e.target.result;
-                document.getElementById('avatarPreviewBox').innerHTML = `<img src="${runningAvatarBuffer}" alt="Preview">`;
-            };
-            reader.readAsDataURL(file);
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    runningAvatarBuffer = e.target.result;
+                    document.getElementById('avatarPreviewBox').innerHTML = `<img src="${runningAvatarBuffer}">`;
+                };
+                reader.readAsDataURL(file);
+            }
         }
 
-        // STEP 1: SCAN FINGERPRINT AT REGISTRATION
         function triggerRegistrationFingerprintScan() {
-            if(!passcheckIdentityGuard()) return;
-
             const icon = document.getElementById('regPrintStatusIcon');
-            const txt = document.getElementById('regPrintStatusText');
-            const hashDisp = document.getElementById('regPrintHashDisplay');
+            const text = document.getElementById('regPrintStatusText');
+            const hash = document.getElementById('regPrintHashDisplay');
 
-            icon.textContent = "⚡";
-            txt.textContent = "SCANNING MASTER THUMBPRINT...";
-            
-            setTimeout(() => {
-                // Generate a permanent biometric identifier for this student
-                registeredFingerprintHash = "FPRINT-" + currentAdmin.tenant.substring(0,3).toUpperCase() + "-" + Math.floor(1000 + Math.random() * 9000);
-                icon.textContent = "🟢";
-                txt.textContent = "Master Print Captured Successfully";
-                hashDisp.textContent = `ID Signature: ${registeredFingerprintHash}`;
-                alert(`🟢 REGISTRATION BIOMETRICS RECORDED:\n\nStored Master Key: [${registeredFingerprintHash}]\nThis string is now coupled to this registration instance.`);
-            }, 1000);
-        }
-
-        function passcheckIdentityGuard() {
-            if(!currentAdmin || !currentAdmin.key) {
-                document.getElementById('adminAuthGateway').style.display = "flex";
-                return false;
-            }
-            return true;
-        }
-
-        function navigateViews(targetViewId, clickedBtn) {
-            if (!passcheckIdentityGuard()) return;
-
-            document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active-tab'));
-            clickedBtn.classList.add('active-tab');
-
-            document.querySelectorAll('.view-panel').forEach(panel => panel.classList.remove('active-view'));
-            document.getElementById(targetViewId).classList.add('active-view');
-
-            if (targetViewId === 'adminControlView') {
-                renderLocalLedgerGrid();
-            } else if (targetViewId === 'matchDayScreeningView') {
-                populateScreeningSelectorDropdown();
-            } else if (targetViewId === 'supervisorOversightView') {
-                renderCentralFederationStream();
-            }
-        }
-
-        function registerBallerToMemory() {
-            if (!passcheckIdentityGuard()) return;
-
-            const name = document.getElementById('pName').value.trim();
-            const school = document.getElementById('pSchool').value.trim();
-            const division = document.getElementById('pDivision').value;
-            const dob = document.getElementById('pDOB').value;
-            const tier = document.getElementById('pTier').value;
-
-            if (!registeredFingerprintHash) {
-                alert("🚨 REGISTRATION REJECTED:\nYou cannot save a profile without scanning and locking an initial biometric master fingerprint record first.");
-                return;
-            }
-
-            const lineups = [
-                document.getElementById('pMatch1').value,
-                document.getElementById('pMatch2').value,
-                document.getElementById('pMatch3').value,
-                document.getElementById('pMatch4').value
-            ];
-
-            const birthYear = new Date(dob).getFullYear();
-            const calculatedAge = 2026 - birthYear;
-            const faceScoreSimulated = Math.floor(Math.random() * (100 - 88 + 1)) + 88;
-
-            const newPlayerNode = {
-                uid: "ATH-" + Math.floor(100000 + Math.random() * 900000),
-                name: name,
-                school: school,
-                dob: dob,
-                division: division,
-                tier: tier,
-                avatar: runningAvatarBuffer,
-                docHash: currentGeneratedHash !== "No File Seeded" ? currentGeneratedHash : "SHA256-" + Math.random().toString(16).substring(2, 10).toUpperCase(),
-                ageDetected: calculatedAge,
-                faceMatchScore: faceScoreSimulated,
-                printHash: registeredFingerprintHash, // Storing captured print
-                status: "PENDING",
-                lineups: lineups
-            };
-
-            tenantDatabases[currentAdmin.tenant].push(newPlayerNode);
-
-            alert(`✅ INTEGRITY LEDGER INGESTION COMPLETE:\n\nPlayer ${name} successfully logged with secure print ${registeredFingerprintHash}.`);
-
-            // Clear configuration forms
-            document.getElementById('playerEnrollmentForm').reset();
-            document.getElementById('avatarPreviewBox').innerHTML = "<span>👤</span>";
-            document.getElementById('mirrorName').textContent = "Awaiting Input";
-            document.getElementById('mirrorHash').textContent = "No File Seeded";
-            document.getElementById('regPrintStatusIcon').textContent = "🛑";
-            document.getElementById('regPrintStatusText').textContent = "Fingerprint Signature Missing";
-            document.getElementById('regPrintHashDisplay').textContent = "Awaiting master capture sequence...";
-            runningAvatarBuffer = "👤";
-            currentGeneratedHash = "No File Seeded";
-            registeredFingerprintHash = ""; 
-            autoTrackDivision();
-        }
-
-        function renderLocalLedgerGrid() {
-            const canvasGrid = document.getElementById('adminMasterRosterDisplay');
-            const localRecords = tenantDatabases[currentAdmin.tenant] || [];
-
-            if (localRecords.length === 0) {
-                canvasGrid.innerHTML = `<div style="grid-column: 1/-1; text-align: center; color: var(--text-dimmed); padding: 20px;">No isolated player records registered inside this domain yet.</div>`;
-                return;
-            }
-
-            canvasGrid.innerHTML = localRecords.map(player => `
-                <div class="player-identity-card">
-                    <div class="player-card-photo">
-                        ${player.avatar.startsWith('data:') ? `<img src="${player.avatar}" alt="Photo">` : player.avatar}
-                    </div>
-                    <div class="player-card-details">
-                        <h4>${player.name}</h4>
-                        <p>School: <strong>${player.school}</strong></p>
-                        <p>Print Locked: <strong style="color:var(--neon-green); font-family:monospace; font-size:0.75rem;">${player.printHash}</strong></p>
-                        <p>Division: <span class="tier-badge tier-xi">${player.division}</span></p>
-                        <div style="margin-top:4px;">
-                            <span class="lineup-inline-badge">M1: ${player.lineups[0]}</span>
-                            <span class="lineup-inline-badge">M2: ${player.lineups[1]}</span>
-                        </div>
-                        <p style="margin-top:5px;">Status: <span class="status-pill status-${player.status.toLowerCase()}">${player.status}</span></p>
-                    </div>
-                </div>
-            `).join('');
-        }
-
-        function uplinkRosterToCentralAdmin() {
-            const localRecords = tenantDatabases[currentAdmin.tenant] || [];
-            if (localRecords.length === 0) {
-                alert("⚠ UPLINK TRANSMISSION REJECTED: Local data structures contain empty indices.");
-                return;
-            }
-
-            localRecords.forEach(player => {
-                if (!masterFederationAdminDatabase.some(m => m.uid === player.uid)) {
-                    masterFederationAdminDatabase.push({
-                        ...player,
-                        districtContext: currentAdmin.tenant
-                    });
-                }
-            });
-
-            alert(`📡 CENTRAL FEDERATION MATRIX SYNCHRONIZED:\n\nSuccessfully piped context channels for ${localRecords.length} student profiles to master system arrays.`);
-            renderCentralFederationStream();
-        }
-
-        function unlockSupervisorOversightFeed() {
-            const enteredPass = document.getElementById('supervisorKeyInput').value;
-            const VALIDATION_TARGET = "SUPERVISOR_OMNIPRESENT_2026";
-
-            if (enteredPass !== VALIDATION_TARGET) {
-                alert("🚨 SYSTEM OVERSIGHT ACCESS DENIED:\n\nInvalid Master Token Footprint.");
-                return;
-            }
-
-            isSupervisorAuthenticated = true;
-            document.getElementById('supervisorLockContainer').style.display = "none";
-            document.getElementById('centralFederationAdminFeed').style.display = "table";
-            renderCentralFederationStream();
-        }
-
-        function renderCentralFederationStream() {
-            if (!isSupervisorAuthenticated) return;
-            const tableBody = document.getElementById('federationTableBody');
-
-            let compiledMatrix = [...masterFederationAdminDatabase];
-            Object.keys(tenantDatabases).forEach(key => {
-                tenantDatabases[key].forEach(p => {
-                    if (!compiledMatrix.some(m => m.uid === p.uid)) {
-                        compiledMatrix.push({
-                            ...p,
-                            districtContext: key
-                        });
-                    }
-                });
-            });
-
-            if (compiledMatrix.length === 0) {
-                tableBody.innerHTML = `<tr><td colspan="5" style="text-align: center; color: var(--text-dimmed); padding: 30px;">No multi-tenant submissions stream received yet.</td></tr>`;
-                return;
-            }
-
-            tableBody.innerHTML = compiledMatrix.map(player => {
-                const ageLimit = DIVISION_AGE_LIMITS[player.division] || 0;
-                const isOveraged = player.ageDetected > ageLimit || player.status === 'FLAGGED';
-                const currentDistrict = player.districtContext || "Rukiga District Pool";
-
-                return `
-                    <tr style="${isOveraged ? 'background-color: rgba(239, 68, 68, 0.03);' : ''}">
-                        <td>
-                            <div class="table-player-cell">
-                                <div class="table-player-avatar">
-                                    ${player.avatar.startsWith('data:') ? `<img src="${player.avatar}">` : player.avatar}
-                                </div>
-                                <div>
-                                    <strong style="color: #fff; font-size: 0.95rem;">${player.name}</strong>
-                                    <div style="font-size: 0.75rem; color: var(--neon-blue); font-family: monospace; margin-top: 2px;">UID: ${player.uid}</div>
-                                </div>
-                            </div>
-                        </td>
-                        <td>
-                            <span class="table-school-tag">🏫 ${player.school}</span>
-                            <div style="margin-top: 2px; font-size:0.75rem; color: var(--neon-green); font-family:monospace;">Key: ${player.printHash}</div>
-                        </td>
-                        <td>
-                            <span style="color: var(--text-main); font-size: 0.85rem;">📍 ${currentDistrict}</span>
-                        </td>
-                        <td>
-                            <div style="color: #fff; font-weight: 500;">${player.dob}</div>
-                            <div class="table-district-badge">Age: <span style="color: ${isOveraged ? 'var(--cyber-red)' : 'var(--emerald-green)'}; font-weight: bold;">${player.ageDetected} yrs</span> [Bracket: ${player.division}]</div>
-                        </td>
-                        <td>
-                            <div style="display: flex; flex-direction: column; gap: 4px; align-items: flex-start;">
-                                <span class="status-pill status-${player.status.toLowerCase()}">${player.status}</span>
-                            </div>
-                        </td>
-                    </tr>
-                `;
-            }).join('');
-        }
-
-        function populateScreeningSelectorDropdown() {
-            const selector = document.getElementById('screeningTargetSelector');
-            const localRecords = tenantDatabases[currentAdmin.tenant] || [];
-
-            if (localRecords.length === 0) {
-                selector.innerHTML = `<option value="">-- No Ballers Mapped Inside Local Tenant Space --</option>`;
-                document.getElementById('radarConsoleLog').innerHTML = "No profile actively loaded into scanning terminal matrix fields.";
-                return;
-            }
-
-            selector.innerHTML = `<option value="">-- Select Target Student for Match Hardware Profiling --</option>` + 
-                localRecords.map(p => `<option value="${p.uid}">${p.name} (${p.uid})</option>`).join('');
-            
-            matchDayScannedPrintHash = ""; 
-            document.getElementById('biometricPrintIcon').textContent = "🛑";
-            document.getElementById('biometricStatusText').textContent = "Hardware Offline — Click to Scan Field Print";
-            document.getElementById('biometricPrintIcon').classList.remove('scanning');
-        }
-
-        function runLiveScreeningAnalysis() {
-            const targetUid = document.getElementById('screeningTargetSelector').value;
-            const logBox = document.getElementById('radarConsoleLog');
-
-            if (!targetUid) {
-                logBox.innerHTML = "No profile actively loaded into scanning terminal matrix fields.";
-                return;
-            }
-
-            const localRecords = tenantDatabases[currentAdmin.tenant] || [];
-            const baller = localRecords.find(p => p.uid === targetUid);
-
-            if (!baller) return;
-
-            const ageLimit = DIVISION_AGE_LIMITS[baller.division];
-            const ageFlagged = baller.ageDetected > ageLimit;
-            
-            // Core Security Metric: Does match day scan equal original saved profile string?
-            let biometricMatchStatusText = `<span style="color: var(--gold-amber);">AWAITING FIELD SCAN...</span>`;
-            if (matchDayScannedPrintHash !== "") {
-                if (matchDayScannedPrintHash === baller.printHash) {
-                    biometricMatchStatusText = `<span style="color: var(--emerald-green); font-weight:bold;">🟢 MATCH CONFIRMED (100% Cryptographic Identity Lock)</span>`;
-                } else {
-                    biometricMatchStatusText = `<span style="color: var(--cyber-red); font-weight:bold;">🚨 BIOMETRIC FRAUD DETECTED: Field print does not match database master record!</span>`;
-                }
-            }
-
-            logBox.innerHTML = `
-                🛰️ <strong style="color:#fff;">TARGET ACQUIRED:</strong> ${baller.name.toUpperCase()} (${baller.uid})<br>
-                🏫 <strong>SCHOOL INDEX:</strong> ${baller.school}<br>
-                🔒 <strong>DATABASE PRINT FILE:</strong> <code style="color:var(--neon-green);">${baller.printHash}</code><br>
-                📊 <strong>LIVE SCAN VERIFICATION:</strong> ${biometricMatchStatusText}<br>
-                🧬 <strong>STRUCTURE ANALYSIS:</strong> Division: ${baller.division} (Max: ${ageLimit} Yrs) | True Age: ${baller.ageDetected} Yrs Old<br>
-                ${ageFlagged ? '🚨 <strong style="color:var(--cyber-red);">CRITICAL CRITERIA EXCEEDED: Age limit error bounds crossed.</strong>' : ''}
-            `;
-        }
-
-        // STEP 2: VERIFY FINGERPRINT ON MATCH DAY (WITH 10% FRAUD CHANCE FOR TESTING SIMULATION)
-        function triggerHardwareMatchDayFingerprintScan() {
-            const targetUid = document.getElementById('screeningTargetSelector').value;
-            if (!targetUid) {
-                alert("Please select a target profile from the dropdown before deploying match-day biometrics.");
-                return;
-            }
-
-            const icon = document.getElementById('biometricPrintIcon');
-            const txt = document.getElementById('biometricStatusText');
-
-            icon.textContent = "⚡";
-            txt.textContent = "INITIALIZING BIOMETRIC FIELD COMPARE OPERATION...";
+            icon.textContent = "⏳";
             icon.classList.add('scanning');
+            text.innerText = "Analyzing Print Ridge Matrix...";
 
             setTimeout(() => {
-                const localRecords = tenantDatabases[currentAdmin.tenant] || [];
-                const baller = localRecords.find(p => p.uid === targetUid);
-                
                 icon.classList.remove('scanning');
-
-                // Simulate a 10% chance that an unauthorized player tries to impersonate using another person's account
-                const triggerSimulatedFraud = Math.random() < 0.10;
-
-                if (triggerSimulatedFraud) {
-                    matchDayScannedPrintHash = "FPRINT-FRAUD-9999"; // Generate broken non-matching token string
-                    icon.textContent = "❌";
-                    txt.textContent = "CRITICAL: BIOMETRIC MISMATCH DETECTED";
-                    alert("🚨 SECURITY ALERT SYSTEM FRAUD BLOCK:\n\nThe current finger signature evaluated does not align with the original profile registration parameters saved inside the ledger index template.");
-                } else {
-                    matchDayScannedPrintHash = baller.printHash; // Perfect identity string lock match!
-                    icon.textContent = "🟢";
-                    txt.textContent = "Verification Key Synchronized";
-                    alert("🟢 IDENTITY SUITE MATCH CONFIRMED:\n\nLive thumb footprint perfectly maps to stored structural database index node properties.");
-                }
-
-                runLiveScreeningAnalysis();
+                registeredFingerprintHash = "BIO-HASH-" + Math.floor(100000 + Math.random() * 900000);
+                icon.textContent = "🟢";
+                text.innerText = "Fingerprint Secured";
+                hash.innerText = registeredFingerprintHash;
             }, 1200);
         }
 
-        function executeScreeningVerdict(verdictType) {
-            const targetUid = document.getElementById('screeningTargetSelector').value;
-            if (!targetUid) return;
-
-            const localRecords = tenantDatabases[currentAdmin.tenant] || [];
-            const baller = localRecords.find(p => p.uid === targetUid);
-
-            if (!baller) return;
-
-            if (matchDayScannedPrintHash === "" && verdictType === 'VERIFIED') {
-                alert("🚨 PROTOCOL OVERRIDE FAULT:\nYou cannot mark this student cleared for match play until their field print check has been submitted and passed.");
+        function registerBallerToMemory() {
+            if (!currentAdmin) return;
+            if (!registeredFingerprintHash) {
+                alert("❌ BIOMETRIC ESCALATION DENIED:\nYou must register and map a master fingerprint token block prior to roster submission.");
                 return;
             }
 
-            if (matchDayScannedPrintHash !== baller.printHash && verdictType === 'VERIFIED') {
-                alert("🚨 SECURITY REFUSAL:\nSystem verification locked out. You cannot explicitly verify an identity card showing severe biometric mismatch flags.");
+            const birthDate = new Date(document.getElementById('pDOB').value);
+            const today = new Date();
+            let calculatedAge = today.getFullYear() - birthDate.getFullYear();
+            const m = today.getMonth() - birthDate.getMonth();
+            if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
+                calculatedAge--;
+            }
+
+            const selectedDivision = document.getElementById('pDivision').value;
+            const absoluteAgeLimit = DIVISION_AGE_LIMITS[selectedDivision];
+            let determinationStatus = "PENDING";
+
+            if (calculatedAge > absoluteAgeLimit) {
+                determinationStatus = "FLAGGED";
+            }
+
+            const newPlayerNode = {
+                uid: "ATH-" + Math.floor(100000 + Math.random() * 900000),
+                name: document.getElementById('pName').value.trim(),
+                school: document.getElementById('pSchool').value.trim(),
+                dob: document.getElementById('pDOB').value,
+                division: selectedDivision,
+                tier: document.getElementById('pTier').value,
+                avatar: runningAvatarBuffer,
+                docHash: currentGeneratedHash,
+                ageDetected: calculatedAge,
+                printHash: registeredFingerprintHash,
+                status: determinationStatus,
+                tenantSource: currentAdmin.tenant,
+                lineups: [
+                    document.getElementById('pMatch1').value,
+                    document.getElementById('pMatch2').value,
+                    document.getElementById('pMatch3').value,
+                    document.getElementById('pMatch4').value
+                ]
+            };
+
+            tenantDatabases[currentAdmin.tenant].push(newPlayerNode);
+            alert(`🎉 SUCCESS:\nProfile structural profile for ${newPlayerNode.name} logged into isolated district storage.`);
+            
+            // Reset input contexts
+            document.getElementById('playerEnrollmentForm').reset();
+            document.getElementById('mirrorName').textContent = "Awaiting Input";
+            document.getElementById('avatarPreviewBox').innerHTML = "<span>👤</span>";
+            document.getElementById('mirrorHash').textContent = "No File Seeded";
+            document.getElementById('regPrintStatusIcon').textContent = "🛑";
+            document.getElementById('regPrintStatusText').innerText = "Fingerprint Signature Missing";
+            document.getElementById('regPrintHashDisplay').innerText = "Awaiting master capture sequence...";
+            runningAvatarBuffer = "👤";
+            currentGeneratedHash = "No File Seeded";
+            registeredFingerprintHash = "";
+
+            autoTrackDivision();
+            renderLocalLedgerGrid();
+            updateScreeningSelectors();
+        }
+
+        function renderLocalLedgerGrid() {
+            const container = document.getElementById('adminMasterRosterDisplay');
+            container.innerHTML = "";
+            if (!currentAdmin) return;
+
+            const records = tenantDatabases[currentAdmin.tenant];
+            if (records.length === 0) {
+                container.innerHTML = `<p style="color: var(--text-dimmed); font-size: 0.9rem; grid-column: 1/-1;">No localized candidate records registered within this tenant workspace frame yet.</p>`;
                 return;
             }
 
-            baller.status = verdictType;
-            alert(`🎯 SCANNING VERDICT COMMITTED:\n\nPlayer status updated to [${verdictType}].`);
+            records.forEach(player => {
+                const card = document.createElement('div');
+                card.className = "player-identity-card";
+
+                let imgStr = player.avatar.startsWith("data:") ? `<img src="${player.avatar}">` : `<span>${player.avatar}</span>`;
+                let statusClass = player.status === "FLAGGED" ? "status-flagged" : player.status === "VERIFIED" ? "status-verified" : "status-pending";
+
+                card.innerHTML = `
+                    <div class="player-card-photo">${imgStr}</div>
+                    <div class="player-card-details">
+                        <h4>${player.name}</h4>
+                        <p>🏫 ${player.school}</p>
+                        <p>🎂 Age: ${player.ageDetected} (${player.division})</p>
+                        <span class="status-pill ${statusClass}">${player.status}</span>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        function updateScreeningSelectors() {
+            const selector = document.getElementById('screeningTargetSelector');
+            selector.innerHTML = `<option value="">-- Choose Profile Node to Evaluate --</option>`;
+            if (!currentAdmin) return;
+
+            tenantDatabases[currentAdmin.tenant].forEach(player => {
+                selector.innerHTML += `<option value="${player.uid}">${player.name} [ID: ${player.uid}]</option>`;
+            });
+        }
+
+        function runLiveScreeningAnalysis() {
+            const id = document.getElementById('screeningTargetSelector').value;
+            const terminal = document.getElementById('radarConsoleLog');
+            if (!id) {
+                terminal.innerText = "No profile actively loaded into scanning terminal matrix fields.";
+                return;
+            }
+
+            const athlete = tenantDatabases[currentAdmin.tenant].find(p => p.uid === id);
+            if (!athlete) return;
+
+            terminal.innerHTML = `
+> INITIALIZING TARGET COMPLIANCE SCAN FOR: ${athlete.name.toUpperCase()}
+> MATCH LEDGER BLOCK ID: ${athlete.uid}
+> DETECTED AGE PARAMETER: ${athlete.ageDetected} Years Old
+> DIVISION BOUNDS CHECK: ${athlete.division} Bracket (Limit: Under-${DIVISION_AGE_LIMITS[athlete.division]})
+--------------------------------------------------------
+[ANALYSIS]: Calculated profile age variance is ${athlete.ageDetected > DIVISION_AGE_LIMITS[athlete.division] ? 'OUTSIDE' : 'WITHIN'} structural framework constraints.
+[BIOMETRICS]: Terminal checking state requires field token physical match check.
+            `;
+            
+            // Reset match scan state variables
+            document.getElementById('biometricPrintIcon').textContent = "🛑";
+            document.getElementById('biometricStatusText').innerText = "Hardware Offline — Click to Scan Field Print";
+            matchDayScannedPrintHash = "";
+        }
+
+        function triggerHardwareMatchDayFingerprintScan() {
+            const targetId = document.getElementById('screeningTargetSelector').value;
+            if (!targetId) {
+                alert("Please select a target athlete to review prior to scanner processing.");
+                return;
+            }
+
+            const athlete = tenantDatabases[currentAdmin.tenant].find(p => p.uid === targetId);
+            const icon = document.getElementById('biometricPrintIcon');
+            const statusText = document.getElementById('biometricStatusText');
+            const terminal = document.getElementById('radarConsoleLog');
+
+            icon.textContent = "⏳";
+            icon.classList.add('scanning');
+            statusText.innerText = "Capturing Pitch-Side Fingerprint...";
+
+            setTimeout(() => {
+                icon.classList.remove('scanning');
+                // Simulate correct match 80% of the time for verification flow demonstration
+                const generateCorrectMatch = Math.random() > 0.2;
+                matchDayScannedPrintHash = generateCorrectMatch ? athlete.printHash : "BIO-HASH-FRAUD-" + Math.floor(100000 + Math.random() * 900000);
+                
+                if (matchDayScannedPrintHash === athlete.printHash) {
+                    icon.textContent = "🟢";
+                    statusText.innerText = "Scan Verified Match!";
+                    terminal.innerHTML += `\n\n[SUCCESS] CRITICAL MATCH FOUND:\n> Field Token: ${matchDayScannedPrintHash}\n> Database Signature: ${athlete.printHash}\n> VERDICT: IDENTITY CONFIRMED.`;
+                } else {
+                    icon.textContent = "❌";
+                    statusText.innerText = "CRITICAL MISMATCH WARNING";
+                    terminal.innerHTML += `\n\n[🚨 ALARM] SPOOF DETECTED:\n> Scanned Token: ${matchDayScannedPrintHash}\n> Expected Registry Sign: ${athlete.printHash}\n> VERDICT: IMPERSONATION THREAT FLAGGED!`;
+                }
+            }, 1500);
+        }
+
+        function executeScreeningVerdict(verdict) {
+            const targetId = document.getElementById('screeningTargetSelector').value;
+            if (!targetId) return;
+
+            const athlete = tenantDatabases[currentAdmin.tenant].find(p => p.uid === targetId);
+            if (!athlete) return;
+
+            athlete.status = verdict;
+            alert(`Evaluated node status updated successfully to: ${verdict}`);
+            
+            renderLocalLedgerGrid();
             runLiveScreeningAnalysis();
-            renderCentralFederationStream();
+            if (isSupervisorAuthenticated) renderGlobalFederationTable();
+        }
+
+        function uplinkRosterToCentralAdmin() {
+            if (!currentAdmin) return;
+            const localRoster = tenantDatabases[currentAdmin.tenant];
+            if (localRoster.length === 0) {
+                alert("Roster ledger allocation queue is currently empty. No data package elements found to sync.");
+                return;
+            }
+
+            localRoster.forEach(localPlayer => {
+                const existingIndex = masterFederationAdminDatabase.findIndex(p => p.uid === localPlayer.uid);
+                if (existingIndex > -1) {
+                    masterFederationAdminDatabase[existingIndex] = { ...localPlayer };
+                } else {
+                    masterFederationAdminDatabase.push({ ...localPlayer });
+                }
+            });
+
+            alert(`⚡ EDGE COUPLING COMPLETION:\nUplink complete. Synced and updated ledger nodes with Central Oversight Repository.`);
+            if (isSupervisorAuthenticated) renderGlobalFederationTable();
+        }
+
+        function unlockSupervisorOversightFeed() {
+            const pass = document.getElementById('supervisorKeyInput').value;
+            if (pass === "SUPERVISOR_OMNIPRESENT_2026") {
+                isSupervisorAuthenticated = true;
+                document.getElementById('supervisorLockContainer').style.display = "none";
+                document.getElementById('centralFederationAdminFeed').style.display = "table";
+                renderGlobalFederationTable();
+            } else {
+                alert("Decryption credential keys mapped improperly to supreme core tracking matrix data layers.");
+            }
+        }
+
+        function renderGlobalFederationTable() {
+            const tbody = document.getElementById('federationTableBody');
+            tbody.innerHTML = "";
+
+            masterFederationAdminDatabase.forEach(p => {
+                const tr = document.createElement('tr');
+                let imgStr = p.avatar.startsWith("data:") ? `<img src="${p.avatar}">` : `<span>${p.avatar}</span>`;
+                let statusClass = p.status === "FLAGGED" ? "status-flagged" : p.status === "VERIFIED" ? "status-verified" : "status-pending";
+
+                let badgesMarkup = "";
+                p.lineups.forEach((l, i) => {
+                    badgesMarkup += `<span class="lineup-inline-badge">M${i+1}: ${l[0]}</span> `;
+                });
+
+                tr.innerHTML = `
+                    <td>
+                        <div class="table-player-cell">
+                            <div class="table-player-avatar">${imgStr}</div>
+                            <div>
+                                <strong style="color:#fff;">${p.name}</strong><br>
+                                <span style="font-size:0.75rem; color:var(--text-dimmed);">UID: ${p.uid}</span>
+                            </div>
+                        </div>
+                    </td>
+                    <td>
+                        <span class="table-school-tag">${p.school}</span>
+                    </td>
+                    <td>
+                        <span style="color:var(--neon-blue); font-size:0.85rem;">${p.tenantSource}</span>
+                    </td>
+                    <td>
+                        <span class="table-timestamp">${p.dob}</span>
+                        <span class="table-district-badge">Calculated Age: <strong>${p.ageDetected} Yrs</strong></span>
+                        <div style="margin-top:4px;">${badgesMarkup}</div>
+                    </td>
+                    <td>
+                        <span class="status-pill ${statusClass}">${p.status}</span>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        function navigateViews(targetPanelId, activeBtnElement) {
+            document.querySelectorAll('.view-panel').forEach(panel => {
+                panel.classList.remove('active-view');
+            });
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                btn.classList.remove('active-tab');
+            });
+
+            document.getElementById(targetPanelId).classList.add('active-view');
+            activeBtnElement.classList.add('active-tab');
         }
     </script>
 </body>
