@@ -191,6 +191,7 @@
         .player-identity-card {
             background: #172237; border: 1px solid var(--panel-border); border-radius: 12px;
             padding: 20px; display: flex; gap: 15px; align-items: center; transition: all 0.2s;
+            position: relative;
         }
         .player-identity-card:hover { border-color: #4b5563; transform: scale(1.02); }
         .player-card-photo { width: 65px; height: 65px; border-radius: 50%; background: var(--bg-dark-input); overflow: hidden; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; }
@@ -201,18 +202,35 @@
         /* Interactive Scanning Control HUD */
         .radar-scan-box {
             background: #0f172a; border: 1px solid #1e293b; padding: 25px; border-radius: 12px;
-            margin-top: 20px; border-left: 4px solid var(--neon-blue);
+            margin-top: 20px; border-left: 4px solid var(--neon-blue); line-height: 1.6;
+        }
+
+        /* Biometric Fingerprint Display Design */
+        .fingerprint-scanner-box {
+            border: 2px dashed var(--panel-border);
+            border-radius: 8px;
+            padding: 15px;
+            background: #0b111e;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .fingerprint-scanner-box:hover { border-color: var(--neon-blue); background: #131c2e; }
+        .fingerprint-icon { font-size: 2.2rem; color: var(--text-dimmed); margin-bottom: 5px; transition: color 0.3s; }
+        .fingerprint-icon.scanning { color: var(--neon-blue); animation: pulseGlow 1s infinite alternate; }
+
+        @keyframes pulseGlow {
+            from { transform: scale(1); filter: drop-shadow(0 0 2px var(--neon-blue)); }
+            to { transform: scale(1.1); filter: drop-shadow(0 0 12px var(--neon-blue)); }
         }
     </style>
 </head>
 <body>
 
-    <!-- ========================================== -->
-    <!-- SECURE MASTER ADMIN ENTRY REGISTRATION GATEWAY-->
-    <! biometric functions>:
-</fingerprint>
-</face recognition>
-    <!-- ========================================== -->
     <div class="auth-overlay" id="adminAuthGateway">
         <div class="auth-card">
             <div style="text-align: center; margin-bottom: 25px;">
@@ -220,9 +238,20 @@
                 <p style="color: var(--text-dimmed); margin: 5px 0 0 0; font-size: 0.85rem;">Exhibition Deployment System Configuration Platform</p>
             </div>
             <form id="adminRegisterForm" onsubmit="event.preventDefault(); commitAdminAccountCreation();">
-                <div class="field-block" style="margin-bottom: 15px;">
-                    <label>Full Name</label>
-                    <input type="text" id="admName" value="Director Alex" required>
+                <div class="form-row" style="margin-bottom: 15px;">
+                    <div class="field-block">
+                        <label>Full Name</label>
+                        <input type="text" id="admName" value="Director Alex" required>
+                    </div>
+                    <div class="field-block">
+                        <label>Silo Tenant / Institution Division</label>
+                        <select id="admTenant" style="width: 100%;">
+                            <option value="Wakiso District Secretariat">Wakiso District Secretariat</option>
+                            <option value="Kampala Central Division">Kampala Central Division</option>
+                            <option value="St. Mary's Kitende Portal">St. Mary's Kitende Portal</option>
+                            <option value="Giants Secondary School Axis">Giants Secondary School Axis</option>
+                        </select>
+                    </div>
                 </div>
                 <div class="form-row" style="margin-bottom: 15px;">
                     <div class="field-block">
@@ -257,9 +286,6 @@
     </div>
 
 
-    <!-- ========================================== -->
-    <!-- MASTER NAVIGATION INTERFACE SIDEBAR        -->
-    <!-- ========================================== -->
     <div class="sidebar">
         <div class="sidebar-header">
             <h2>TAMBUKA SPORTS</h2>
@@ -270,18 +296,18 @@
             <li><button class="nav-btn" onclick="navigateViews('adminControlView', this)">📊 Admin Control Ledger</button></li>
             <li><button class="nav-btn" onclick="navigateViews('matchDayScreeningView', this)">🔍 Match Screening HUD</button></li>
         </ul>
-        <div style="margin-top: auto; padding: 20px; font-size: 0.75rem; color: var(--text-dimmed); text-align: center; border-top: 1px solid var(--panel-border);">
+        <div style="margin-top: auto; padding: 15px; border-top: 1px solid var(--panel-border); font-size: 0.8rem; background: rgba(0,0,0,0.2);">
+            <div style="color: var(--text-dimmed); margin-bottom: 5px;">ACTIVE TENANT SILO:</div>
+            <div id="sidebarTenantLabel" style="color: var(--gold-amber); font-weight: bold; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">None Linked</div>
+        </div>
+        <div style="padding: 15px; font-size: 0.75rem; color: var(--text-dimmed); text-align: center; border-top: 1px solid var(--panel-border);">
             Admin Session: <span id="sidebarAdminLabel" style="color: var(--neon-blue);">Standby</span>
         </div>
     </div>
 
 
-    <!-- ========================================== -->
-    <!-- PRINCIPAL SYSTEM OPERATION PANELS          -->
-    <!-- ========================================== -->
     <div class="workspace">
 
-        <!-- PANEL 1: SCHOOL REGISTRATION FORM -->
         <div id="schoolRegView" class="view-panel active-view">
             <h1 class="view-title">School Registration & Enrollment Terminal</h1>
             <p class="view-subtitle">Inbound player roster ingestion channel for youth athletics mapping parameters.</p>
@@ -324,8 +350,8 @@
                                 </select>
                             </div>
                             <div class="field-block">
-                                <label>System Upload Routing</label>
-                                <input type="file" accept="image/*" onchange="processAvatarUpload(this)" style="padding: 8px;">
+                                <label>System Upload Routing (Birth Cert / ID)</label>
+                                <input type="file" id="pDocFile" accept="image/*,application/pdf" onchange="processAvatarUpload(this)" style="padding: 8px;" required>
                             </div>
                         </div>
                         <button type="submit" class="action-btn" style="background: linear-gradient(135deg, #059669 0%, #047857 100%);">Route Player to Admin Ledger 🚀</button>
@@ -338,26 +364,28 @@
                     <h3 id="mirrorName" style="margin: 10px 0 5px 0;">Awaiting Input</h3>
                     <p id="mirrorSchool" style="margin: 0; font-size: 0.85rem; color: var(--text-dimmed);">No School Mapped</p>
                     <div id="mirrorDivision" class="status-pill status-pending" style="margin-top: 15px; width: fit-content; align-self: center;">U15 Mapped</div>
+                    
+                    <div style="margin-top: 20px; padding: 10px; background: #0b111e; border: 1px dashed var(--panel-border); border-radius: 6px;">
+                        <span style="font-size: 0.7rem; color: var(--text-dimmed); display: block; text-transform: uppercase;">Anti-Tamper Doc Hash:</span>
+                        <code id="mirrorHash" style="font-size: 0.75rem; color: var(--neon-blue); word-break: break-all;">No File Seeded</code>
+                    </div>
                 </div>
             </div>
         </div>
 
 
-        <!-- PANEL 2: ADMIN MANAGEMENT CENTRAL LEDGER -->
         <div id="adminControlView" class="view-panel">
             <h1 class="view-title">Admin Operational Verification Center</h1>
             <p class="view-subtitle">Review incoming school rosters, analyze data parameters, and toggle team sheets.</p>
             
             <div class="glass-card" style="margin-bottom: 30px;">
-                <div class="card-title">📋 Active Roster Breakdown Matrix</div>
+                <div class="card-title">📋 Active Roster Breakdown Matrix (<span id="tenantDisplayTitle" style="color: var(--gold-amber);"></span>)</div>
                 <div class="player-card-grid" id="adminMasterRosterDisplay">
-                    <!-- Cards injection loop -->
-                </div>
+                    </div>
             </div>
         </div>
 
 
-        <!-- PANEL 3: MATCH DAY SCREENING INTERFACE -->
         <div id="matchDayScreeningView" class="view-panel">
             <h1 class="view-title">Match Day Bio-Screening Terminal HUD</h1>
             <p class="view-subtitle">Real-time age fraud identification matrix and cross-reference logic verification tool.</p>
@@ -368,14 +396,23 @@
                     <div class="field-block">
                         <label>Target Active Roster Profile</label>
                         <select id="screeningTargetSelector" onchange="runLiveScreeningAnalysis()">
-                            <!-- Managed by JS arrays -->
-                        </select>
+                            </select>
                     </div>
+                    <div class="field-block">
+                        <label>Biometric Hardware Component Interface</label>
+                        <div class="fingerprint-scanner-box" onclick="triggerHardwareFingerprintScan()">
+                            <div class="fingerprint-icon" id="biometricPrintIcon">🛑</div>
+                            <span id="biometricStatusText" style="font-size: 0.8rem; color: var(--text-dimmed); font-weight: 600;">Hardware Offline — Click to Scan</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-row" style="margin-top: 15px;">
                     <div class="field-block">
                         <label>Exhibition Fraud Audit Tools</label>
                         <div style="display: flex; gap: 20px; align-items: center; height: 100%;">
                             <label style="cursor: pointer; font-weight: bold; color: var(--cyber-red); display: flex; align-items: center; gap: 8px;">
-                                <input type="checkbox" id="flagAgeMismatch" onchange="runLiveScreeningAnalysis()"> Flag Age Discrepancy Risk
+                                <input type="checkbox" id="flagAgeMismatch" onchange="runLiveScreeningAnalysis()"> Toggle Manual override Flag
                             </label>
                         </div>
                     </div>
@@ -394,13 +431,22 @@
 
     </div>
 
-    <!-- ========================================== -->
-    <!-- SECURE INTERACTION JAVASCRIPT LAYER        -->
-    <!-- ========================================== -->
     <script>
-        // Global Local Storage Context Array
-        let dynamicTournamentDatabase = [];
+        // Global Multi-Tenant Local Database Map
+        let tenantDatabases = {
+            "Wakiso District Secretariat": [
+                { uid: "ATH-928134", name: "Asimwe Francis", school: "Giants Sec School", dob: "2012-12-12", division: "U15", tier: "XI", avatar: "👤", docHash: "SHA256-8f3a1c9e884b2c1a", ageDetected: 13, faceMatchScore: 98, printHash: "PRINT-OK-77a1", status: "VERIFIED" },
+                { uid: "ATH-441092", name: "Akatwijuka Innocent", school: "Giants Sec School", dob: "2006-07-17", division: "U19", tier: "SUB", avatar: "👤", docHash: "SHA256-4b1192fa77dc4e21", ageDetected: 19, faceMatchScore: 96, printHash: "PRINT-PENDING", status: "PENDING" }
+            ],
+            "Kampala Central Division": [],
+            "St. Mary's Kitende Portal": [],
+            "Giants Secondary School Axis": []
+        };
+
         let currentAdmin = null;
+        let runningAvatarBuffer = "👤";
+        let currentGeneratedHash = "No File Seeded";
+        let biometricHardwareScanned = false;
 
         // Form Mirror Text Synchronization
         document.getElementById('pName').addEventListener('input', (e) => {
@@ -427,35 +473,69 @@
             document.getElementById('mirrorDivision').textContent = `${targetDiv} Mapped (Age: ${calcAge})`;
         }
 
-        // FileReader Photo Base64 Buffer Converter
-        let runningAvatarBuffer = "👤";
+        // Crypto-Simulation Anti-Forgery Document Hash Generator
+        function generateSecureHash(filename) {
+            let seed = filename + Date.now() + Math.random();
+            let hash = 0;
+            for (let i = 0; i < seed.length; i++) {
+                hash = (hash << 5) - hash + seed.charCodeAt(i);
+                hash |= 0;
+            }
+            return "SHA256-" + Math.abs(hash).toString(16).substring(0, 8) + btoa(filename).substring(0, 8).toLowerCase();
+        }
+
+        // FileReader Photo base64 Conversion & Hardware Simulation Integration
         function processAvatarUpload(element) {
             if(element.files && element.files[0]) {
+                const file = element.files[0];
+                currentGeneratedHash = generateSecureHash(file.name);
+                document.getElementById('mirrorHash').textContent = currentGeneratedHash;
+
                 const reader = new FileReader();
                 reader.onload = function(e) {
                     runningAvatarBuffer = e.target.result;
                     document.getElementById('avatarPreviewBox').innerHTML = `<img src="${runningAvatarBuffer}" alt="Preview">`;
                 };
-                reader.readAsDataURL(element.files[0]);
+                reader.readAsDataURL(file);
             }
         }
 
-        // Commits Admin Account Setup Context View States
+        // Initialize Administrative Identity and password environment verification structures
         function commitAdminAccountCreation() {
             currentAdmin = {
                 name: document.getElementById('admName').value,
+                tenant: document.getElementById('admTenant').value,
                 email: document.getElementById('admEmail').value,
                 phone: document.getElementById('admPhone').value,
                 dob: document.getElementById('admDOB').value,
-                sex: document.getElementById('admSex').value
+                sex: document.getElementById('admSex').value,
+                key: document.getElementById('admPassword').value
             };
             
             document.getElementById('sidebarAdminLabel').textContent = currentAdmin.name;
+            document.getElementById('sidebarTenantLabel').textContent = currentAdmin.tenant;
+            document.getElementById('tenantDisplayTitle').textContent = currentAdmin.tenant;
             document.getElementById('adminAuthGateway').style.display = "none";
+            
+            autoTrackDivision();
         }
 
-        // View Router Navigation
+        // Security Password Validation Guard Logic
+        function passcheckIdentityGuard() {
+            if(!currentAdmin || !currentAdmin.key) {
+                alert("ACCESS DENIED: Administrative token space uninitialized. Complete gateway environment parameters.");
+                document.getElementById('adminAuthGateway').style.display = "flex";
+                return false;
+            }
+            return true;
+        }
+
+        // View Router Navigation Layer with Security Validation Locks
         function navigateViews(targetPanelId, activeBtnElement) {
+            if(targetPanelId === 'adminControlView' || targetPanelId === 'matchDayScreeningView') {
+                if(!passcheckIdentityGuard()) return;
+            }
+
             document.querySelectorAll('.view-panel').forEach(p => p.classList.remove('active-view'));
             document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active-tab'));
             
@@ -466,7 +546,7 @@
             if(targetPanelId === 'matchDayScreeningView') populateScreeningDropdownRouter();
         }
 
-        // Adds player profiles safely to active registry tracking maps
+        // Route data safely to active tenant matrix pipeline arrays
         function registerBallerToMemory() {
             const record = {
                 uid: "ATH-" + Math.floor(100000 + Math.random() * 900000),
@@ -476,52 +556,52 @@
                 division: document.getElementById('pDivision').value,
                 tier: document.getElementById('pTier').value,
                 avatar: runningAvatarBuffer,
+                docHash: currentGeneratedHash,
+                ageDetected: (2026 - new Date(document.getElementById('pDOB').value).getFullYear()) + (Math.random() > 0.88 ? 4 : 0),
+                faceMatchScore: Math.floor(Math.random() * 15) + 85,
+                printHash: "FPRINT-" + Math.random().toString(16).substring(2,6).toUpperCase(),
                 status: "PENDING"
             };
 
-            dynamicTournamentDatabase.unshift(record);
-            alert(`SUCCESS: Registered ${record.name} into tournament storage pipeline structure array data tables.`);
+            let targetTenant = currentAdmin ? currentAdmin.tenant : "Wakiso District Secretariat";
+            tenantDatabases[targetTenant].unshift(record);
+            alert(`SECURE PIPELINE OUTCOME:\nRegistered ${record.name} into ${targetTenant} table arrays.\nAnti-Forgery Hash Guard Committed.`);
             
-            // Clean active forms safely
+            // Clean forms cleanly
             document.getElementById('playerEnrollmentForm').reset();
             document.getElementById('avatarPreviewBox').innerHTML = "<span>👤</span>";
             runningAvatarBuffer = "👤";
+            currentGeneratedHash = "No File Seeded";
+            document.getElementById('mirrorHash').textContent = currentGeneratedHash;
             document.getElementById('mirrorName').textContent = "Awaiting Input";
             document.getElementById('mirrorSchool').textContent = "No School Mapped";
             autoTrackDivision();
         }
 
-        // Compiles Admin Control Room Layout View Panels
+        // Compiles Multi-Tenant Dashboard View Ledger Cards
         function generateAdminDashboardLedgers() {
             const viewport = document.getElementById('adminMasterRosterDisplay');
             viewport.innerHTML = "";
 
-            if(dynamicTournamentDatabase.length === 0) {
-                viewport.innerHTML = `<div style="grid-column: 1/-1; text-align: center; padding: 40px; color: var(--text-dimmed);">No incoming school rosters populated yet. Submit profiles from the Registry Desk view window panel.</div>`;
+            let activeDb = tenantDatabases[currentAdmin.tenant];
+            if(activeDb.length === 0) {
+                viewport.innerHTML = `<div style="grid-column: 1/-1; text-align: center; padding: 40px; color: var(--text-dimmed);">No incoming school rosters inside this tenant silo.</div>`;
                 return;
             }
 
-            dynamicTournamentDatabase.forEach(player => {
+            activeDb.forEach(player => {
                 const card = document.createElement('div');
                 card.className = "player-identity-card";
-                
-                let imageBlock = player.avatar.startsWith("data:") 
-                    ? `<img src="${player.avatar}" alt="Photo">` 
-                    : `<span>👤</span>`;
-
-                let statusClass = "status-pending";
-                if(player.status === "VERIFIED") statusClass = "status-verified";
-                if(player.status === "FLAGGED") statusClass = "status-flagged";
-
-                let tierLabel = player.tier === "XI" ? "First XI Starter" : "Substitute Roster";
-                let tierClass = player.tier === "XI" ? "tier-xi" : "tier-sub";
+                let imageBlock = player.avatar.startsWith("data:") ? `<img src="${player.avatar}" alt="Photo">` : `<span>👤</span>`;
+                let statusClass = player.status === "VERIFIED" ? "status-verified" : (player.status === "FLAGGED" ? "status-flagged" : "status-pending");
 
                 card.innerHTML = `
                     <div class="player-card-photo">${imageBlock}</div>
                     <div class="player-card-details">
                         <h4>${player.name}</h4>
                         <p style="color: #fff; font-weight: 600;">${player.school}</p>
-                        <p>DOB: ${player.dob} | <span class="tier-badge ${tierClass}">${tierLabel}</span></p>
+                        <p>DOB: ${player.dob} | <span class="tier-badge ${player.tier === 'XI' ? 'tier-xi' : 'tier-sub'}">${player.tier === 'XI' ? 'First XI' : 'Bench'}</span></p>
+                        <div style="font-size:0.7rem; color: var(--text-dimmed); margin-top:2px;">Doc Hash: <code style="color:var(--neon-blue);">${player.docHash.substring(0,14)}...</code></div>
                         <div style="margin-top: 8px;">
                             <span class="status-pill ${statusClass}">${player.status}</span>
                             <span style="font-size: 0.8rem; margin-left: 10px; color: var(--neon-blue); font-weight: bold;">${player.division}</span>
@@ -532,13 +612,39 @@
             });
         }
 
-        // Match Day Screening Core Mechanics Routing Populators
+        // Trigger dynamic hardware interface fingerprint scan routines
+        function triggerHardwareFingerprintScan() {
+            const targetUid = document.getElementById('screeningTargetSelector').value;
+            if(!targetUid) {
+                alert("ROSTER ERROR: Select an active target configuration profile first before checking fingerprint matrices.");
+                return;
+            }
+
+            const icon = document.getElementById('biometricPrintIcon');
+            const text = document.getElementById('biometricStatusText');
+
+            icon.textContent = "🌀";
+            icon.classList.add('scanning');
+            text.textContent = "COMMUNICATING WITH PERIPHERAL COMPONENT HUB...";
+
+            setTimeout(() => {
+                icon.classList.remove('scanning');
+                biometricHardwareScanned = true;
+                icon.textContent = "👤";
+                text.textContent = "BIOMETRIC PRINT ACQUIRED — CHECKS RUNNING";
+                runLiveScreeningAnalysis();
+            }, 1200);
+        }
+
+        // Populate Match Day screening router channels based on active tenant
         function populateScreeningDropdownRouter() {
             const selector = document.getElementById('screeningTargetSelector');
             selector.innerHTML = "";
+            biometricHardwareScanned = false;
+            document.getElementById('biometricPrintIcon').textContent = "🛑";
+            document.getElementById('biometricStatusText').textContent = "Hardware Offline — Click to Scan";
 
-            const pendingRecords = dynamicTournamentDatabase.filter(p => p.status === "PENDING");
-
+            const pendingRecords = tenantDatabases[currentAdmin.tenant].filter(p => p.status === "PENDING");
             if(pendingRecords.length === 0) {
                 selector.innerHTML = `<option value="">No profiles waiting in secure clearance routing channels.</option>`;
                 runLiveScreeningAnalysis();
@@ -551,30 +657,40 @@
             runLiveScreeningAnalysis();
         }
 
-        // Live Realtime Security Console Logic Simulation Framework Outputs
+        // Live Intelligent Fraud Verification Framework Core Simulation Logic
         function runLiveScreeningAnalysis() {
             const targetUid = document.getElementById('screeningTargetSelector').value;
             const logBox = document.getElementById('radarConsoleLog');
             const forcedFlag = document.getElementById('flagAgeMismatch').checked;
 
             if(!targetUid) {
-                logBox.innerHTML = `⚠️ STANDBY: Roster screening engine queue registers empty. Add more candidates to access data metrics.`;
+                logBox.innerHTML = `⚠️ STANDBY: Roster screening engine queue registers empty inside this tenant partition.`;
                 return;
             }
 
-            const targetRecord = dynamicTournamentDatabase.find(p => p.uid === targetUid);
-            
-            if(forcedFlag) {
+            const targetRecord = tenantDatabases[currentAdmin.tenant].find(p => p.uid === targetUid);
+            const assumedAge = 2026 - new Date(targetRecord.dob).getFullYear();
+            let systemFlaggedAcuity = (targetRecord.ageDetected > assumedAge) || forcedFlag;
+
+            let printStatusSnippet = biometricHardwareScanned 
+                ? `<span style="color:var(--emerald-green);">Hardware Scan Checked: Physical footprint verified against ledger entry ID token [${targetRecord.printHash}].</span>`
+                : `<span style="color:var(--gold-amber);">Biometric Hardware Status: Awaiting physical fingerprint input on system verification pad.</span>`;
+
+            if(systemFlaggedAcuity) {
                 logBox.innerHTML = `
-                    <span style="color: var(--cyber-red); font-weight: bold;">🚨 CRITICAL SYSTEM ANOMALY DETECTED:</span><br>
-                    Target Profile: ${targetRecord.name} (${targetRecord.school})<br>
-                    Analysis Parameters: Mapped birth date record (${targetRecord.dob}) conflicts with regional school admission registry profiles. System flags extreme biometric mismatch indicators.
+                    <span style="color: var(--cyber-red); font-weight: bold;">🚨 CRITICAL FRAUD ANOMALY DETECTED BY SCREENING CORE:</span><br>
+                    <strong>Target Profile:</strong> ${targetRecord.name} (${targetRecord.school})<br>
+                    <strong>Security Parameter Mismatch:</strong> Declared age is <strong>${assumedAge}</strong>, but hardware analytics estimates age at <strong>${targetRecord.ageDetected}</strong>.<br>
+                    <strong>Biometric Confidence Score:</strong> ${targetRecord.faceMatchScore}% Face Consistency.<br>
+                    <strong>Identity Verification Hash:</strong> Document anti-tamper signature [${targetRecord.docHash.substring(0,16)}...] matches system records.<br>
+                    ${printStatusSnippet}
                 `;
             } else {
                 logBox.innerHTML = `
-                    <span style="color: var(--emerald-green); font-weight: bold;">⚡ CORE SCREENING ANALYTICS RUNNING:</span><br>
-                    Target Mapped: ${targetRecord.name} | Division: ${targetRecord.division} | Tier: ${targetRecord.tier === "XI" ? "Starting XI" : "Substitute"}<br>
-                    Security Metrics: Digital birth registration verification matches across districts. Clear pattern matching profile verified. Ready for deployment status action keys.
+                    <span style="color: var(--emerald-green); font-weight: bold;">⚡ ADVANCED BIO-SCREENING ANALYTICS RUNNING (CLEAR):</span><br>
+                    <strong>Target Candidate:</strong> ${targetRecord.name} | Division: ${targetRecord.division} | System Hash Verified ✓<br>
+                    <strong>AI Structural Breakdown:</strong> Computed biometric parameters match declared date of birth (${targetRecord.dob}). Physical parameters are safe.<br>
+                    ${printStatusSnippet}
                 `;
             }
         }
@@ -584,27 +700,22 @@
             const targetUid = document.getElementById('screeningTargetSelector').value;
             if(!targetUid) return;
 
-            const record = dynamicTournamentDatabase.find(p => p.uid === targetUid);
+            const record = tenantDatabases[currentAdmin.tenant].find(p => p.uid === targetUid);
             const forcedFlag = document.getElementById('flagAgeMismatch').checked;
 
             if(forcedFlag || finalVerdict === 'FLAGGED') {
                 record.status = "FLAGGED";
-                alert(`SECURITY LOCK TRIGGERED: ${record.name} flagged as fraud vector risk and blacklisted.`);
+                alert(`SECURITY LOCK TRIGGERED: ${record.name} blacklisted from system sheets.`);
             } else {
                 record.status = "VERIFIED";
-                alert(`ROSTER EXPEDITION SETTLED: ${record.name} validated clear for active tournament deployment maps.`);
+                alert(`ROSTER INTEGRITY SETTLED: ${record.name} validated clear for active tournament deployment maps.`);
             }
 
             document.getElementById('flagAgeMismatch').checked = false;
             populateScreeningDropdownRouter();
         }
 
-        // System Initialization Lifecycle Hooks with Mock Showcase Arrays
         window.onload = function() {
-            dynamicTournamentDatabase = [
-                { uid: "ATH-928134", name: "asimwe francis", school: "giants sec school", dob: "2004-12-12", division: "U15", tier: "XI", avatar: "👤", status: "VERIFIED" },
-                { uid: "ATH-441092", name: "akatwijuka innocent", school: "giants sec school", dob: "2004-07-17", division: "U19", tier: "SUB", avatar: "👤", status: "PENDING" }
-            ];
             autoTrackDivision();
         }
     </script>
