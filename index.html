@@ -3,1037 +3,1026 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tambuka IdentityGuard Engine</title>
+    <title>TAMBUKA // IDENTITYGUARD ENGINE</title>
     <style>
         :root {
-            --bg-dark: #0a0f1d;
-            --panel-bg: #111827;
-            --panel-border: #1f2937;
-            --neon-blue: #00f2fe;
-            --neon-green: #4facfe;
-            --emerald-green: #10b981;
-            --cyber-red: #ef4444;
-            --gold-amber: #f59e0b;
-            --text-main: #f3f4f6;
-            --text-dimmed: #9ca3af;
+            --matrix-bg: #030712;
+            --cyber-panel: #0b1329;
+            --neon-cyan: #00f2fe;
+            --laser-blue: #4facfe;
+            --neon-green: #39ff14;
+            --warning-amber: #ffaa00;
+            --alert-red: #ff3333;
+            --text-bright: #e2e8f0;
+            --text-dark: #94a3b8;
+            --glitch-border: rgba(0, 242, 254, 0.2);
         }
 
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
         }
 
         body {
-            background-color: var(--bg-dark);
-            color: var(--text-main);
-            padding: 20px;
+            background-color: var(--matrix-bg);
+            color: var(--text-bright);
+            padding: 15px;
+            overflow-x: hidden;
+            background-image: 
+                linear-gradient(rgba(0, 242, 254, 0.02) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 242, 254, 0.02) 1px, transparent 1px);
+            background-size: 20px 20px;
         }
 
-        .dashboard-container {
-            max-width: 1200px;
+        .cyber-wrapper {
+            max-width: 1300px;
             margin: 0 auto;
         }
 
+        /* Top High-Tech Command Header */
         header {
-            text-align: center;
-            margin-bottom: 30px;
-            border-bottom: 2px solid var(--panel-border);
-            padding-bottom: 20px;
-        }
-
-        h1 {
-            color: var(--neon-blue);
-            letter-spacing: 2px;
-            margin-bottom: 5px;
-        }
-
-        /* Nav Tab Bar Structure */
-        .navigation-bar {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 25px;
-            background: var(--panel-bg);
-            padding: 10px;
-            border-radius: 8px;
-            border: 1px solid var(--panel-border);
-        }
-
-        .nav-btn {
-            background: transparent;
-            border: none;
-            color: var(--text-dimmed);
-            padding: 12px 20px;
-            cursor: pointer;
-            font-weight: 600;
+            background: linear-gradient(90deg, #0b1329 0%, #1c2541 100%);
+            border: 2px solid var(--neon-cyan);
+            border-bottom: 5px solid var(--laser-blue);
+            padding: 15px 25px;
             border-radius: 4px;
-            transition: all 0.3s ease;
-        }
-
-        .nav-btn:hover {
-            color: var(--neon-blue);
-            background: rgba(0, 242, 254, 0.05);
-        }
-
-        .active-tab {
-            color: var(--bg-dark) !important;
-            background: var(--neon-blue) !important;
-            box-shadow: 0 0 15px rgba(0, 242, 254, 0.4);
-        }
-
-        /* View Panel Switches */
-        .view-panel {
-            display: none;
-            background: var(--panel-bg);
-            border: 1px solid var(--panel-border);
-            border-radius: 12px;
-            padding: 25px;
-            margin-bottom: 30px;
-        }
-
-        .active-view {
-            display: block !important;
-        }
-
-        /* Gateways & Lock Screens */
-        .auth-lockscreen {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            padding: 40px 20px;
-            text-align: center;
-        }
-
-        .crypto-input {
-            width: 100%;
-            max-width: 400px;
-            padding: 12px;
-            background: var(--bg-dark);
-            border: 1px solid var(--panel-border);
-            color: #fff;
-            border-radius: 6px;
-            margin: 15px 0;
-            text-align: center;
-            font-family: monospace;
-            font-size: 1.1rem;
-            letter-spacing: 2px;
-        }
-
-        .action-btn {
-            background: linear-gradient(135deg, var(--neon-green), var(--neon-blue));
-            color: var(--bg-dark);
-            border: none;
-            padding: 12px 30px;
-            font-weight: bold;
-            border-radius: 6px;
-            cursor: pointer;
-            transition: transform 0.2s ease;
-        }
-
-        .action-btn:hover {
-            transform: scale(1.02);
-        }
-
-        /* Input Form Element Arrays */
-        .form-group {
             margin-bottom: 20px;
+            position: relative;
+            box-shadow: 0 0 25px rgba(0, 242, 254, 0.15);
         }
 
-        .form-group label {
-            display: block;
-            margin-bottom: 8px;
-            color: var(--text-dimmed);
-            font-size: 0.9rem;
+        header::before {
+            content: "SECURE NODE ENTRY // ARCH: v2.6";
+            position: absolute;
+            top: -10px;
+            left: 20px;
+            background: var(--matrix-bg);
+            padding: 0 10px;
+            font-size: 0.75rem;
+            color: var(--neon-cyan);
+            letter-spacing: 1px;
+            font-weight: bold;
         }
 
-        .form-group input, .form-group select {
-            width: 100%;
-            padding: 12px;
-            background: var(--bg-dark);
-            border: 1px solid var(--panel-border);
-            color: #fff;
-            border-radius: 6px;
-        }
-
-        .form-row {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
+        .header-grid {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
             gap: 15px;
         }
 
-        /* Lineup Matrix Selector Styling */
-        .lineup-matrix-box {
-            background: var(--bg-dark);
-            border: 1px solid var(--panel-border);
-            border-radius: 6px;
-            padding: 15px;
+        h1 {
+            font-weight: 800;
+            font-size: 1.8rem;
+            letter-spacing: 1px;
+            background: linear-gradient(45deg, #fff 30%, var(--neon-cyan));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-transform: uppercase;
+        }
+
+        /* Tactical Navigation Matrix */
+        .tactical-tabs {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 8px;
             margin-bottom: 20px;
         }
 
-        .lineup-grid-four {
+        .tab-trigger {
+            background: #111c44;
+            border: 1px solid var(--glitch-border);
+            color: var(--text-dark);
+            padding: 14px 5px;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            font-weight: bold;
+            cursor: pointer;
+            letter-spacing: 1px;
+            transition: all 0.2s ease;
+            position: relative;
+            overflow: hidden;
+            text-align: center;
+        }
+
+        .tab-trigger:hover {
+            color: var(--neon-cyan);
+            border-color: var(--neon-cyan);
+            background: rgba(0, 242, 254, 0.05);
+        }
+
+        .tab-trigger.active-node {
+            color: var(--matrix-bg);
+            background: var(--neon-cyan);
+            font-weight: bold;
+            border: 1px solid #fff;
+            box-shadow: 0 0 15px rgba(0, 242, 254, 0.4);
+        }
+
+        /* Core Command Modules panels */
+        .command-module {
+            display: none;
+            background: var(--cyber-panel);
+            border: 1px solid #1e293b;
+            padding: 25px;
+            border-radius: 4px;
+            position: relative;
+            box-shadow: inset 0 0 30px rgba(0,0,0,0.5);
+        }
+
+        .command-module.module-active {
+            display: block;
+            border-left: 4px solid var(--neon-cyan);
+        }
+
+        /* Section Indicators */
+        .module-title {
+            font-size: 1.1rem;
+            font-weight: bold;
+            letter-spacing: 1px;
+            color: #fff;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            border-bottom: 1px dashed var(--text-dark);
+            padding-bottom: 10px;
+        }
+
+        .module-title::before {
+            content: "■";
+            color: var(--neon-cyan);
+        }
+
+        /* Input Crypt Array Forms */
+        .form-grid-layout {
+            display: grid;
+            grid-template-columns: 1.5fr 1fr;
+            gap: 25px;
+        }
+
+        @media (max-width: 768px) {
+            .form-grid-layout { grid-template-columns: 1fr; }
+            .tactical-tabs { grid-template-columns: repeat(2, 1fr); }
+        }
+
+        .input-block {
+            margin-bottom: 18px;
+        }
+
+        .input-block label {
+            display: block;
+            font-size: 0.8rem;
+            color: var(--text-dark);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 6px;
+            font-weight: 600;
+        }
+
+        .cyber-input {
+            width: 100%;
+            padding: 12px;
+            background: #060b19;
+            border: 1px solid #1e2942;
+            color: var(--neon-cyan);
+            border-radius: 2px;
+            font-size: 0.95rem;
+            transition: all 0.3s;
+        }
+
+        .cyber-input:focus {
+            outline: none;
+            border-color: var(--neon-cyan);
+            box-shadow: 0 0 8px rgba(0, 242, 254, 0.3);
+            background: #091126;
+        }
+
+        /* Match Matrix Configuration */
+        .matrix-box-subpanel {
+            background: #060b19;
+            border: 1px solid #192547;
+            padding: 15px;
+            margin: 20px 0;
+            position: relative;
+        }
+
+        .matrix-box-subpanel::after {
+            content: "LINEUP LOCK SYSTEM";
+            position: absolute;
+            bottom: -8px;
+            right: 15px;
+            background: var(--cyber-panel);
+            padding: 0 5px;
+            font-size: 0.65rem;
+            color: var(--text-dark);
+            font-weight: bold;
+        }
+
+        .lineup-quad-grid {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
             gap: 10px;
             margin-top: 8px;
         }
 
-        .match-slot {
-            background: var(--panel-bg);
-            border: 1px solid var(--panel-border);
-            padding: 8px;
-            border-radius: 4px;
+        .quad-slot {
+            background: var(--cyber-panel);
+            border: 1px solid #1e2942;
+            padding: 10px;
             text-align: center;
         }
 
-        .match-slot span {
+        .quad-slot span {
             display: block;
             font-size: 0.75rem;
-            color: var(--neon-blue);
+            color: var(--laser-blue);
             margin-bottom: 5px;
             font-weight: bold;
         }
 
-        .match-slot select {
-            padding: 6px;
-            font-size: 0.8rem;
+        .quad-slot select {
+            width: 100%;
+            background: #030712;
+            border: 1px solid #1e2942;
+            color: #fff;
+            padding: 4px;
+            font-size: 0.75rem;
         }
 
-        /* Inline Mini Hardware Box */
-        .inline-hardware-trigger {
-            background: var(--bg-dark);
-            border: 1px solid var(--panel-border);
-            padding: 12px;
-            border-radius: 6px;
+        /* Biometric Hardware Interface UI Component */
+        .hardware-peripheral-deck {
+            background: #050a14;
+            border: 1px dashed var(--laser-blue);
+            padding: 15px;
             display: flex;
             align-items: center;
             justify-content: space-between;
-            margin-top: 5px;
+            margin-top: 15px;
+            border-radius: 2px;
         }
 
-        /* Local Ledger Grid Layouts */
-        .identity-grid-matrix {
+        /* Action Arrays Buttons */
+        .fire-action-btn {
+            background: linear-gradient(135deg, var(--laser-blue) 0%, var(--neon-cyan) 100%);
+            border: none;
+            color: #030712;
+            font-weight: 800;
+            font-size: 0.9rem;
+            padding: 14px 25px;
+            text-transform: uppercase;
+            cursor: pointer;
+            letter-spacing: 1px;
+            box-shadow: 0 4px 15px rgba(0, 242, 254, 0.2);
+            transition: all 0.2s;
+            width: 100%;
+        }
+
+        .fire-action-btn:hover {
+            box-shadow: 0 0 25px rgba(0, 242, 254, 0.5);
+            transform: translateY(-1px);
+        }
+
+        /* HUD Live Analytics Display (Right Side Column) */
+        .hud-telemetry-panel {
+            background: #050a14;
+            border: 1px solid #1e2942;
+            padding: 20px;
+            text-align: center;
+            border-top: 3px solid var(--warning-amber);
+        }
+
+        .hud-avatar-frame {
+            width: 120px;
+            height: 120px;
+            background: #0b1329;
+            border: 2px solid var(--text-dark);
+            margin: 0 auto 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3.5rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hud-avatar-frame img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .scan-overlay-line {
+            width: 100%;
+            height: 2px;
+            background: var(--neon-cyan);
+            position: absolute;
+            top: 0;
+            left: 0;
+            animation: radarSweep 2s infinite linear;
+            box-shadow: 0 0 8px var(--neon-cyan);
+        }
+
+        @keyframes radarSweep {
+            0% { top: 0%; }
+            50% { top: 100%; }
+            100% { top: 0%; }
+        }
+
+        /* Status Tags Indicators */
+        .cyber-badge {
+            display: inline-block;
+            padding: 4px 10px;
+            font-size: 0.75rem;
+            font-weight: bold;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            border-radius: 1px;
+        }
+
+        .badge-pending { background: rgba(255, 170, 0, 0.1); color: var(--warning-amber); border: 1px solid var(--warning-amber); }
+        .badge-passed { background: rgba(57, 255, 20, 0.1); color: var(--neon-green); border: 1px solid var(--neon-green); }
+        .badge-failed { background: rgba(255, 51, 51, 0.1); color: var(--alert-red); border: 1px solid var(--alert-red); }
+
+        /* Local Ledger Array Grid */
+        .ledger-matrix-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 20px;
-            margin-top: 20px;
+            grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+            gap: 15px;
+            margin-top: 15px;
         }
 
-        .player-identity-card {
-            background: var(--bg-dark);
-            border: 1px solid var(--panel-border);
-            border-radius: 8px;
+        .grid-data-node {
+            background: #060b19;
+            border: 1px solid #1e2942;
             padding: 15px;
             display: flex;
             gap: 15px;
             align-items: center;
+            position: relative;
         }
 
-        .player-card-photo {
-            width: 70px;
-            height: 70px;
-            background: var(--panel-bg);
-            border-radius: 6px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 2rem;
-            border: 1px solid var(--panel-border);
-            overflow: hidden;
+        .grid-data-node:hover {
+            border-color: var(--neon-cyan);
         }
 
-        .player-card-photo img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        .player-card-details h4 {
-            color: #fff;
-            margin-bottom: 4px;
-        }
-
-        .player-card-details p {
-            font-size: 0.85rem;
-            color: var(--text-dimmed);
-            margin-bottom: 2px;
-        }
-
-        /* Badges & Status Pills */
-        .status-pill {
-            display: inline-block;
-            padding: 3px 8px;
-            border-radius: 4px;
-            font-size: 0.75rem;
-            font-weight: bold;
-        }
-
-        .status-pending { background: rgba(245, 158, 11, 0.15); color: var(--gold-amber); }
-        .status-verified { background: rgba(16, 185, 129, 0.15); color: var(--emerald-green); }
-        .status-flagged { background: rgba(239, 68, 68, 0.15); color: var(--cyber-red); }
-
-        .tier-badge {
-            display: inline-block;
-            padding: 2px 5px;
-            font-size: 0.7rem;
-            border-radius: 3px;
-            font-weight: bold;
-            background: #2563eb;
-            color: #fff;
-        }
-
-        /* Oversight Matrices and Tabular Structure Design Elements */
-        .table-scroller-container {
-            width: 100%;
-            overflow-x: auto;
-            margin-top: 20px;
-            border-radius: 8px;
-            border: 1px solid var(--panel-border);
-        }
-
-        .federation-ledger-table {
-            width: 100%;
-            border-collapse: collapse;
-            text-align: left;
-            background: var(--bg-dark);
-            font-size: 0.9rem;
-        }
-
-        .federation-ledger-table th {
-            background-color: rgba(31, 41, 55, 0.7);
-            color: var(--neon-blue);
-            padding: 14px 16px;
-            font-weight: 600;
-            border-bottom: 2px solid var(--panel-border);
-            text-transform: uppercase;
-            font-size: 0.75rem;
-            letter-spacing: 1px;
-        }
-
-        .federation-ledger-table td {
-            padding: 14px 16px;
-            border-bottom: 1px solid var(--panel-border);
-            color: var(--text-main);
-            vertical-align: middle;
-        }
-
-        .federation-ledger-table tr:hover {
-            background-color: rgba(255, 255, 255, 0.02);
-        }
-
-        .table-player-cell {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-
-        .table-player-avatar {
-            width: 36px;
-            height: 36px;
-            border-radius: 4px;
-            background: var(--panel-bg);
-            border: 1px solid var(--panel-border);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            overflow: hidden;
-            flex-shrink: 0;
-        }
-
-        .table-player-avatar img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        .table-school-tag {
-            color: var(--gold-amber);
-            font-weight: 500;
-        }
-
-        .table-district-badge {
-            display: block;
-            font-size: 0.75rem;
-            color: var(--text-dimmed);
-            margin-top: 2px;
-        }
-
-        .table-timestamp {
-            font-family: monospace;
-            color: var(--text-dimmed);
-        }
-
-        .lineup-inline-badge {
-            display: inline-block;
-            font-size: 0.7rem;
-            background: rgba(0, 242, 254, 0.1);
-            color: var(--neon-blue);
-            border: 1px solid rgba(0, 242, 254, 0.2);
-            padding: 1px 4px;
-            border-radius: 3px;
-            margin-right: 2px;
-            margin-top: 2px;
-        }
-
-        /* Matchday Verification Array Elements */
-        .screening-console-panel {
+        /* Field Processing Scanner Console Modules */
+        .dual-terminal-layout {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 25px;
-            margin-top: 20px;
+            gap: 20px;
         }
 
-        .radar-log-terminal {
-            background: #05070f;
-            border: 1px solid #1e293b;
-            border-radius: 6px;
+        @media (max-width: 768px) {
+            .dual-terminal-layout { grid-template-columns: 1fr; }
+        }
+
+        .matrix-terminal-box {
+            background: #02040a;
+            border: 1px solid #151f32;
             padding: 15px;
-            font-family: monospace;
             color: #38bdf8;
-            height: 220px;
+            height: 230px;
             overflow-y: auto;
-            line-height: 1.5;
+            border-left: 2px solid var(--laser-blue);
+            font-size: 0.9rem;
+            line-height: 1.4;
         }
 
-        .hardware-scanner-box {
-            border: 2px dashed var(--panel-border);
-            border-radius: 8px;
+        .biometric-sensor-pad {
+            border: 2px dashed #1e2942;
+            background: #040812;
+            padding: 35px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            padding: 30px;
-            text-align: center;
-            cursor: pointer;
-            transition: all 0.3s ease;
         }
 
-        .hardware-scanner-box:hover {
-            border-color: var(--neon-blue);
+        .biometric-sensor-pad:hover {
+            border-color: var(--neon-cyan);
             background: rgba(0, 242, 254, 0.02);
         }
 
-        .biometric-glyph {
+        .fingerprint-glyph-icon {
             font-size: 3.5rem;
-            margin-bottom: 15px;
-            transition: all 0.5s ease;
+            margin-bottom: 10px;
             user-select: none;
+            color: var(--text-dark);
         }
 
-        @keyframes pulseBiometrics {
-            0% { transform: scale(1); opacity: 1; }
-            50% { transform: scale(1.1); opacity: 0.6; }
-            100% { transform: scale(1); opacity: 1; }
+        @keyframes scanPulse {
+            0% { transform: scale(1); opacity: 1; color: var(--laser-blue); }
+            50% { transform: scale(1.08); opacity: 0.5; color: var(--neon-cyan); }
+            100% { transform: scale(1); opacity: 1; color: var(--laser-blue); }
         }
 
-        .scanning {
-            animation: pulseBiometrics 1s infinite ease-in-out;
-            color: var(--neon-blue);
+        .active-scanning-pulse {
+            animation: scanPulse 1s infinite linear;
+        }
+
+        /* Master Database Matrix Spreadsheet Table Layout */
+        .scroller-wrapper {
+            width: 100%;
+            overflow-x: auto;
+            margin-top: 15px;
+            border: 1px solid #1e2942;
+        }
+
+        .tactical-table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+            font-size: 0.85rem;
+        }
+
+        .tactical-table th {
+            background: #0e172c;
+            color: var(--neon-cyan);
+            padding: 12px 15px;
+            font-size: 0.8rem;
+            letter-spacing: 1px;
+            border-bottom: 2px solid #1e2942;
+            text-transform: uppercase;
+        }
+
+        .tactical-table td {
+            padding: 12px 15px;
+            border-bottom: 1px solid #0f172a;
+            background: #050a14;
+        }
+
+        .tactical-table tr:hover td {
+            background: #091224;
+        }
+
+        /* Gateway Cover Panel */
+        .auth-gate-box {
+            text-align: center;
+            max-width: 450px;
+            margin: 60px auto;
+            background: var(--cyber-panel);
+            border: 2px solid var(--warning-amber);
+            padding: 40px 30px;
+            box-shadow: 0 0 30px rgba(255, 170, 0, 0.1);
         }
     </style>
 </head>
 <body>
 
-    <div class="dashboard-container">
+    <div class="cyber-wrapper">
+        
+        <!-- HEADER BLOCK -->
         <header>
-            <h1>TAMBUKA IDENTITYGUARD v2.6</h1>
-            <p style="color: var(--text-dimmed);">Multi-Tenant Structural Age Verification & Biometric Match Ledger Engine</p>
+            <div class="header-grid">
+                <div>
+                    <h1>Tambuka IdentityGuard Engine</h1>
+                    <p style="color: var(--text-dark); font-size: 0.85rem; letter-spacing: 1px; font-weight: 500;">METRIC AGE DEVIATION SCANNER & BIOMETRIC AUTHENTICATION LEDGER</p>
+                </div>
+                <div id="activeDomainTag" style="font-size: 0.9rem; color: var(--warning-amber); background: #050a14; padding: 6px 12px; border: 1px solid #1e2942; font-weight: bold;">
+                    🔒 NODE LINK: OFFLINE
+                </div>
+            </div>
         </header>
 
-        <div id="adminAuthGateway" class="view-panel active-view" style="margin-bottom:0;">
-            <div class="auth-lockscreen">
-                <h3 style="color: var(--neon-blue); margin-bottom:10px;">🔐 Dynamic Verification Node Entry</h3>
-                <p style="color: var(--text-dimmed); max-width: 500px;">Please feed your assigned regional cryptographic allocation token to initiate data structures for your isolated domain.</p>
-                <input type="password" id="tenantSecretKey" class="crypto-input" placeholder="••••••••••••••">
-                <button class="action-btn" onclick="executeTenantHandshake()">Authenticate Terminal</button>
-                <p style="margin-top: 15px; font-size: 0.8rem; color: var(--text-dimmed);">Hint: Test keys are <code>RUKIGA_POOL_26</code> or <code>KAMPALA_HUB_26</code></p>
-            </div>
+        <!-- SECURITY PORTAL CONTAINER -->
+        <div id="gatekeeperPanel" class="auth-gate-box">
+            <h2 style="color:var(--warning-amber); font-size:1.2rem; letter-spacing:1px; margin-bottom:10px; text-transform: uppercase;">🔴 Isolated Tenant Authentication</h2>
+            <p style="color:var(--text-dark); font-size:0.85rem; margin-bottom:20px; line-height: 1.4;">Feed assigned administrative security string tokens into verification processing rows to decouple localized operational files.</p>
+            <input type="password" id="passkeyInputToken" class="cyber-input" placeholder="ENTER ISOLATION ACCESS KEY" style="text-align:center; letter-spacing:4px; margin-bottom:15px;">
+            <button class="fire-action-btn" style="background:var(--warning-amber);" onclick="initializeHandshakeSync()">Decrypt Domain Array</button>
+            <p style="font-size:0.8rem; color:var(--text-dark); margin-top:15px;">Developer Test Allocation Seeds: <strong style="color: #fff;">RUKIGA_POOL_26</strong> or <strong style="color: #fff;">KAMPALA_HUB_26</strong></p>
         </div>
 
-        <div id="masterOperationsBase" style="display: none;">
+        <!-- MAIN TERMINAL HUB INTERFACE MATRIX -->
+        <div id="mainDashboardCore" style="display: none;">
             
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
-                <div id="identityBannerContext" style="font-weight: bold; color: var(--neon-blue);">Active Channel: Loading...</div>
-                <button style="background:transparent; border:1px solid var(--cyber-red); color:var(--cyber-red); padding:4px 10px; border-radius:4px; cursor:pointer; font-size:0.8rem;" onclick="location.reload()">Terminate Session</button>
+            <!-- MASTER NAVIGATION ARCHITECTURE -->
+            <div class="tactical-tabs">
+                <button class="tab-trigger active-node" onclick="switchModuleView('enrollmentModule', this)">[01] Ingestion Form</button>
+                <button class="tab-trigger" onclick="switchModuleView('localLedgerModule', this)">[02] District Ledger</button>
+                <button class="tab-trigger" onclick="switchModuleView('fieldScannerModule', this)">[03] Field Terminal</button>
+                <button class="tab-trigger" onclick="switchModuleView('globalOversightModule', this)">[04] Global Matrix</button>
             </div>
 
-            <div class="navigation-bar">
-                <button class="nav-btn active-tab" onclick="navigateViews('playerEnrollmentView', this)">1. Athlete Ingestion Form</button>
-                <button class="nav-btn" onclick="navigateViews('adminControlView', this)">2. Local Tenant Ledger</button>
-                <button class="nav-btn" onclick="navigateViews('matchDayScreeningView', this)">3. Field Terminal Scanner</button>
-                <button class="nav-btn" onclick="navigateViews('supervisorOversightView', this)">4. Central Oversight Board</button>
-            </div>
-
-            <div id="playerEnrollmentView" class="view-panel active-view">
-                <h3 style="margin-bottom: 20px; color: #fff; border-bottom: 1px solid var(--panel-border); padding-bottom: 10px;">📝 Student-Athlete Structural Profiles Registration</h3>
+            <!-- MODULE 1: PROFILE INGESTION FORM -->
+            <div id="enrollmentModule" class="command-module module-active">
+                <div class="module-title">Athlete Ingestion Profile Registration Port</div>
                 
-                <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 30px;">
-                    <form id="playerEnrollmentForm" onsubmit="event.preventDefault(); registerBallerToMemory();">
-                        <div class="form-group">
-                            <label for="pName">Full Legal Name (As it appears on ID documents):</label>
-                            <input type="text" id="pName" placeholder="e.g., John Doe" required oninput="document.getElementById('mirrorName').textContent = this.value || 'Awaiting Input';">
+                <div class="form-grid-layout">
+                    <form id="ingestionFormGroup" onsubmit="event.preventDefault(); commitProfileNode();">
+                        <div class="input-block">
+                            <label>Full Legal Name (Match Verified Docs):</label>
+                            <input type="text" id="formName" class="cyber-input" placeholder="e.g. AMANYA DEREK" required oninput="document.getElementById('hudNameMirror').textContent = this.value.toUpperCase() || 'AWAITING SEED';">
                         </div>
 
-                        <div class="form-group">
-                            <label for="pSchool" style="color: var(--neon-blue); font-weight: bold;">🏫 Educational Institution / School Name:</label>
-                            <input type="text" id="pSchool" placeholder="Enter full school name" required>
+                        <div class="input-block">
+                            <label>Educational Institution / Source School:</label>
+                            <input type="text" id="formSchool" class="cyber-input" placeholder="Enter registration institution" required>
                         </div>
 
-                        <div class="lineup-matrix-box">
-                            <label style="color: var(--neon-green); font-weight: bold; font-size: 0.9rem; display: block;">📋 Competition Match Lineup Parameters (4 Match Stream):</label>
-                            <div class="lineup-grid-four">
-                                <div class="match-slot">
+                        <!-- Match Grid Parameters Selection Arrays -->
+                        <div class="matrix-box-subpanel">
+                            <label style="color: var(--neon-cyan); font-size: 0.8rem; font-weight: bold; display: block; letter-spacing: 1px;">⚡ FIELD TOURNAMENT STREAM LINEUP DESIGNATION MATRIX</label>
+                            <div class="lineup-quad-grid">
+                                <div class="quad-slot">
                                     <span>Match 1</span>
-                                    <select id="pMatch1" required>
-                                        <option value="Starter">Starting Lineup</option>
-                                        <option value="Substitute">Substitute</option>
-                                    </select>
+                                    <select id="m1" required><option value="Starter">Starter</option><option value="Substitute">Sub</option></select>
                                 </div>
-                                <div class="match-slot">
+                                <div class="quad-slot">
                                     <span>Match 2</span>
-                                    <select id="pMatch2" required>
-                                        <option value="Starter">Starting Lineup</option>
-                                        <option value="Substitute">Substitute</option>
-                                    </select>
+                                    <select id="m2" required><option value="Starter">Starter</option><option value="Substitute">Sub</option></select>
                                 </div>
-                                <div class="match-slot">
+                                <div class="quad-slot">
                                     <span>Match 3</span>
-                                    <select id="pMatch3" required>
-                                        <option value="Starter">Starting Lineup</option>
-                                        <option value="Substitute">Substitute</option>
-                                    </select>
+                                    <select id="m3" required><option value="Starter">Starter</option><option value="Substitute">Sub</option></select>
                                 </div>
-                                <div class="match-slot">
+                                <div class="quad-slot">
                                     <span>Match 4</span>
-                                    <select id="pMatch4" required>
-                                        <option value="Starter">Starting Lineup</option>
-                                        <option value="Substitute">Substitute</option>
-                                    </select>
+                                    <select id="m4" required><option value="Starter">Starter</option><option value="Substitute">Sub</option></select>
                                 </div>
                             </div>
                         </div>
 
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label for="pDOB">Date of Birth:</label>
-                                <input type="date" id="pDOB" required onchange="autoTrackDivision()">
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                            <div class="input-block">
+                                <label>Temporal Profile DOB:</label>
+                                <input type="date" id="formDOB" class="cyber-input" required onchange="handleDynamicAgeCalculation()">
                             </div>
-                            <div class="form-group">
-                                <label for="pDivision">Assigned Bracket Grouping:</label>
-                                <select id="pDivision" required onchange="autoTrackDivision()">
-                                    <option value="Under-15">Under-15 (U15 Bracket Group)</option>
-                                    <option value="Under-17">Under-17 (U17 Bracket Group)</option>
-                                    <option value="Under-19">Under-19 (U19 Bracket Group)</option>
+                            <div class="input-block">
+                                <label>Assigned Tournament Division:</label>
+                                <select id="formDivision" class="cyber-input" required onchange="handleDynamicAgeCalculation()">
+                                    <option value="Under-15">Under-15 Division Group</option>
+                                    <option value="Under-17">Under-17 Division Group</option>
+                                    <option value="Under-19">Under-19 Division Group</option>
                                 </select>
                             </div>
                         </div>
 
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label for="pTier">Competition Classification Tier:</label>
-                                <select id="pTier">
-                                    <option value="Tier-1 (Elite)">Tier-1 (Elite National Division)</option>
-                                    <option value="Tier-2 (Regional)">Tier-2 (Regional District Stream)</option>
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                            <div class="input-block">
+                                <label>Competition Ranking Tier:</label>
+                                <select id="formTier" class="cyber-input">
+                                    <option value="Tier-1 (Elite)">Tier-1 (Elite National Stream)</option>
+                                    <option value="Tier-2 (Regional)">Tier-2 (Tier-2 District Stream)</option>
                                 </select>
                             </div>
-                            <div class="form-group">
-                                <label for="pAvatarFile">Upload Verification Identity Photo:</label>
-                                <input type="file" id="pAvatarFile" accept="image/*" onchange="processLocalAvatarBuffer(this)">
+                            <div class="input-block">
+                                <label>Registry Identity Face Photo:</label>
+                                <input type="file" id="formFile" class="cyber-input" accept="image/*" onchange="extractDataURLBuffer(this)">
                             </div>
                         </div>
 
-                        <div class="form-group" style="border: 1px dashed var(--neon-green); padding: 12px; border-radius: 6px; background: rgba(79, 172, 254, 0.02);">
-                            <label style="color: var(--neon-green); font-weight: bold; margin-bottom: 2px;">🧬 Step 1: Initial Biometric Roster Enrollment:</label>
-                            <div class="inline-hardware-trigger">
-                                <div style="display: flex; align-items: center; gap: 10px;">
-                                    <span id="regPrintStatusIcon" style="font-size: 1.5rem;">🛑</span>
-                                    <div>
-                                        <div id="regPrintStatusText" style="font-size: 0.85rem; font-weight: bold; color: #fff;">Fingerprint Signature Missing</div>
-                                        <div id="regPrintHashDisplay" style="font-family: monospace; font-size: 0.75rem; color: var(--text-dimmed);">Awaiting master capture sequence...</div>
-                                    </div>
-                                </div>
-                                <button type="button" class="action-btn" style="padding: 6px 15px; font-size: 0.8rem; background: var(--neon-green);" onclick="triggerRegistrationFingerprintScan()">Capture Master Print</button>
+                        <!-- Embedded Peripheral Simulation Unit Box -->
+                        <div class="hardware-peripheral-deck">
+                            <div>
+                                <span id="hardwareLedStatus" style="color:var(--alert-red); margin-right:5px;">●</span>
+                                <span style="font-size:0.85rem; color:var(--text-bright); text-transform:uppercase; font-weight: bold;">Biometric Registration Pad:</span>
+                                <div id="hardwareHashValue" style="font-size:0.75rem; color:var(--text-dark); margin-top:2px;">Awaiting capture key trigger...</div>
                             </div>
+                            <button type="button" class="fire-action-btn" style="padding:6px 12px; font-size:0.75rem; width:auto;" onclick="captureMasterRegistrationPrint()">Scan Master Print</button>
                         </div>
 
-                        <button type="submit" class="action-btn" style="width: 100%; margin-top: 10px;">Commit Student Profile Node to Memory</button>
+                        <button type="submit" class="fire-action-btn" style="margin-top: 20px;">Commit Profile Block to Local Nodes</button>
                     </form>
 
-                    <div style="background: var(--bg-dark); border: 1px solid var(--panel-border); padding: 20px; border-radius: 8px; height: fit-content; text-align: center;">
-                        <h4 style="font-size: 0.8rem; color: var(--text-dimmed); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 15px;">Live Cryptographic Encryption Mirror</h4>
-                        <div id="avatarPreviewBox" style="width: 100px; height: 100px; background: var(--panel-bg); border-radius: 50%; margin: 0 auto 15px; display: flex; align-items: center; justify-content: center; font-size: 3rem; border: 2px solid var(--panel-border); overflow: hidden;">
+                    <!-- LIVE COUNTERPART TELEMETRY DISPLAY PANEL (HUD) -->
+                    <div class="hud-telemetry-panel">
+                        <div style="font-size:0.75rem; color:var(--text-dark); letter-spacing:1px; margin-bottom:15px; text-transform:uppercase; font-weight: bold;">// CRYPTOGRAPHIC TELEMETRY SCAN MIRROR</div>
+                        <div class="hud-avatar-frame" id="hudImageContainer">
                             <span>👤</span>
+                            <div class="scan-overlay-line"></div>
                         </div>
-                        <h3 id="mirrorName" style="color: #fff; margin-bottom: 5px; font-size: 1.2rem;">Awaiting Input</h3>
-                        <div id="mirrorDivision" class="tier-badge" style="background: var(--gold-amber); margin-bottom: 15px;">U15 Bracket Group</div>
-                        <div style="text-align: left; background: var(--panel-bg); padding: 10px; border-radius: 4px; font-family: monospace; font-size: 0.75rem; word-break: break-all;">
-                            <span style="color: var(--neon-blue);">Doc Hash Signature:</span><br>
-                            <span id="mirrorHash" style="color: var(--text-dimmed);">No File Seeded</span>
+                        <h3 id="hudNameMirror" style="color:#fff; font-size:1.1rem; letter-spacing:1px; margin-bottom:5px; font-weight: bold;">AWAITING SEED</h3>
+                        <div id="hudDivisionTag" class="cyber-badge badge-pending" style="margin-bottom:20px;">U15 MATRICES</div>
+                        
+                        <div style="text-align:left; background:#02040a; padding:12px; border-left:2px solid var(--warning-amber); font-size:0.75rem; line-height: 1.4;">
+                            <span style="color:var(--neon-cyan); font-weight: bold;">DATA HASH SIGNATURE:</span><br>
+                            <span id="hudHashDisplay" style="color:var(--text-dark); word-break:break-all;">EMPTY_STREAM_BUFFER</span>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <div id="adminControlView" class="view-panel">
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; border-bottom: 1px solid var(--panel-border); padding-bottom: 10px;">
-                    <div>
-                        <h3 style="color: #fff;">🗂️ Localized Node Ingestion Ledger</h3>
-                        <p style="color: var(--text-dimmed); font-size: 0.85rem;">Isolate dataset records assigned specifically within your active channel token keyspace.</p>
-                    </div>
-                    <button class="action-btn" style="background: linear-gradient(135deg, #059669, #10b981);" onclick="uplinkRosterToCentralAdmin()">Uplink Local Roster to Central System</button>
+            <!-- MODULE 2: DISTRICT DATABASE RECORDS LEDGER -->
+            <div id="localLedgerModule" class="command-module">
+                <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:15px; margin-bottom:20px; border-bottom:1px dashed var(--text-dark); padding-bottom:15px;">
+                    <div class="module-title" style="margin-bottom:0; border:none; padding:0;">District Network Local Isolated Storage</div>
+                    <button class="fire-action-btn" style="width:auto; padding:8px 20px; background:linear-gradient(135deg, var(--neon-green), #10b981);" onclick="uplinkLocalNodesToCentralDatabase()">Sync Edge Data Packet to Central Core</button>
                 </div>
-                <div id="adminMasterRosterDisplay" class="identity-grid-matrix">
-                    </div>
+                <div class="ledger-matrix-grid" id="districtRosterOutputGrid">
+                    <!-- Cards populate dynamically -->
+                </div>
             </div>
 
-            <div id="matchDayScreeningView" class="view-panel">
-                <h3 style="margin-bottom: 10px; color: #fff;">🏟️ Match-Day Field Screening Verification Terminal</h3>
-                <p style="color: var(--text-dimmed); font-size: 0.85rem; border-bottom: 1px solid var(--panel-border); padding-bottom: 15px;">Interface hardware scanners with dynamic encryption memory to verify athlete eligibility criteria in real-time.</p>
+            <!-- MODULE 3: TOURNAMENT PITCH-SIDE SCANNER TERMINAL -->
+            <div id="fieldScannerModule" class="command-module">
+                <div class="module-title">Pitch-Side Biometric Screening Terminal Matrix</div>
                 
-                <div style="margin-top: 20px; background: var(--bg-dark); padding: 15px; border-radius: 6px; border: 1px solid var(--panel-border);">
-                    <label for="screeningTargetSelector" style="display:block; margin-bottom:8px; font-size:0.85rem; color:var(--text-dimmed);">Target Athlete for Profile Evaluation:</label>
-                    <select id="screeningTargetSelector" style="width:100%; padding:12px; background:var(--panel-bg); border:1px solid var(--panel-border); color:#fff; border-radius:6px;" onchange="runLiveScreeningAnalysis()">
-                        </select>
+                <div style="background:#060b19; padding:15px; border:1px solid #1e2942; margin-bottom:20px;">
+                    <label style="display:block; font-size:0.75rem; color:var(--text-dark); text-transform:uppercase; margin-bottom:6px; font-weight: bold;">Select Local Registered Target to Load into Memory Arrays:</label>
+                    <select id="fieldTargetSelect" class="cyber-input" onchange="loadTargetIntoTerminalConsole()">
+                        <!-- Dropdown targets inject programmatically -->
+                    </select>
                 </div>
 
-                <div class="screening-console-panel">
+                <div class="dual-terminal-layout">
                     <div>
-                        <h4 style="color:#fff; margin-bottom:10px; font-size:0.9rem;">Live Analysis Output Console:</h4>
-                        <div id="radarConsoleLog" class="radar-log-terminal">
-                            No profile actively loaded into scanning terminal matrix fields.
+                        <div style="font-size:0.8rem; color:var(--text-dark); text-transform:uppercase; margin-bottom:6px; font-weight: bold;">Console Live Evaluation Diagnostic Streams:</div>
+                        <div class="matrix-terminal-box" id="terminalLiveLog">
+                            Awaiting verification hardware selection framework. Terminal core idling...
                         </div>
                         <div style="display:flex; gap:10px; margin-top:15px;">
-                            <button class="action-btn" style="flex:1; background:var(--cyber-red); color:#fff;" onclick="executeScreeningVerdict('FLAGGED')">🚨 Flag & Disqualify</button>
-                            <button class="action-btn" style="flex:1; background:var(--emerald-green); color:#fff;" onclick="executeScreeningVerdict('VERIFIED')">✅ Verify Pass Clear</button>
+                            <button class="fire-action-btn" style="background:var(--alert-red); color:#fff;" onclick="overrideFieldScreeningVerdict('FLAGGED')">🚨 Manual Flag Reject</button>
+                            <button class="fire-action-btn" style="background:var(--neon-green); color:#030712;" onclick="overrideFieldScreeningVerdict('VERIFIED')">✅ Core Pass Authenticate</button>
                         </div>
                     </div>
 
-                    <div style="display:flex; flex-direction:column; justify-content:space-between;">
-                        <div>
-                            <h4 style="color:#fff; margin-bottom:10px; font-size:0.9rem;">🧬 Step 2: Live Match-Day Biometric Matching Verification Block:</h4>
-                            <div class="hardware-scanner-box" onclick="triggerHardwareMatchDayFingerprintScan()">
-                                <div id="biometricPrintIcon" class="biometric-glyph">🛑</div>
-                                <div id="biometricStatusText" style="font-weight:bold; color:#fff; font-size:0.9rem;">Hardware Offline — Click to Scan Field Print</div>
-                                <p style="font-size:0.75rem; color:var(--text-dimmed); margin-top:5px; max-width:240px;">Asks the athlete for a new scan to test against their original registration signature.</p>
-                            </div>
+                    <div>
+                        <div style="font-size:0.8rem; color:var(--text-dark); text-transform:uppercase; margin-bottom:6px; font-weight: bold;">Live Core Biometric Identity Stream:</div>
+                        <div class="biometric-sensor-pad" onclick="fireFieldHardwareMatchCheckSequence()">
+                            <div class="fingerprint-glyph-icon" id="fieldScannerGraphic">🧬</div>
+                            <div id="fieldScannerLabel" style="font-size:0.85rem; font-weight:bold; color:#fff;">TERMINAL SENSOR DISCONNECTED</div>
+                            <p style="font-size:0.8rem; color:var(--text-dark); margin-top:5px; max-width:280px; line-height:1.4;">Tap target panel area to initiate dynamic digital authentication scan matrices.</p>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <div id="supervisorOversightView" class="view-panel">
-                <h3 style="margin-bottom: 5px; color: #fff;">📡 Master Competition Oversight Feed (Simulated Central Board)</h3>
-                <p style="color: var(--text-dimmed); font-size: 0.85rem; margin-bottom: 20px;">Simulates global federation view receiving submissions from distinct districts concurrently.</p>
-
-                <div id="supervisorLockContainer" class="auth-lockscreen" style="background: var(--bg-dark); border: 1px solid var(--panel-border); border-radius: 8px;">
-                    <h4 style="color: var(--gold-amber); margin-bottom: 5px;">🔒 Multi-Tenant Supervisor Security Decryption Matrix</h4>
-                    <p style="color: var(--text-dimmed); font-size: 0.8rem; max-width: 450px; margin-bottom: 15px;">Accessing cross-district amalgamated streams requires confirmation of supreme administrative credentials clearance metrics.</p>
-                    <input type="password" id="supervisorKeyInput" class="crypto-input" placeholder="SUPERVISOR_OMNIPRESENT_2026" value="SUPERVISOR_OMNIPRESENT_2026" style="max-width: 320px; margin: 5px 0 15px;">
-                    <button class="action-btn" style="background: var(--gold-amber);" onclick="unlockSupervisorOversightFeed()">Unlock Global Stream Feed</button>
-                </div>
-
-                <div class="table-scroller-container">
-                    <table class="federation-ledger-table" id="centralFederationAdminFeed" style="display: none;">
+            <!-- MODULE 4: GLOBAL SUPERVISOR OVERSIGHT DATA GRID -->
+            <div id="globalOversightModule" class="command-module">
+                <div class="module-title">Supreme High Federation Unified Global Oversight Broad Feed</div>
+                
+                <div class="scroller-wrapper">
+                    <table class="tactical-table">
                         <thead>
                             <tr>
-                                <th>Student Athlete Profile</th>
-                                <th>Institution / School</th>
-                                <th>District Domain Node</th>
-                                <th>Temporal Matrix (DOB / Age)</th>
-                                <th>Identity Status Parameters</th>
+                                <th>Candidate Target Node</th>
+                                <th>Source Educational Hub</th>
+                                <th>Allocated Network Domain</th>
+                                <th>Telemetry Age Validation</th>
+                                <th>Core Identity Verification Pass Status</th>
                             </tr>
                         </thead>
-                        <tbody id="federationTableBody">
-                            </tbody>
+                        <tbody id="globalFederationTableRows">
+                            <!-- Global records stream here -->
+                        </tbody>
                     </table>
                 </div>
             </div>
+
         </div>
     </div>
 
+    <!-- SCRIPT INFRASTRUCTURE INJECTIONS -->
     <script>
-        const AUTHORIZED_CRYPTO_TENANTS = {
-            "RUKIGA_POOL_26": "Rukiga District Pool",
-            "KAMPALA_HUB_26": "Kampala Central Hub"
+        const DOMAIN_TENANT_SCHEMAS = {
+            "RUKIGA_POOL_26": "Rukiga District Pool Network",
+            "KAMPALA_HUB_26": "Kampala Central Core Node"
         };
 
-        const DIVISION_AGE_LIMITS = {
-            "Under-15": 15,
-            "Under-17": 17,
-            "Under-19": 19
+        const DIVISION_LIMITS = { "Under-15": 15, "Under-17": 17, "Under-19": 19 };
+
+        let activeWorkspaceContext = null;
+        let runningImageStream64 = "👤";
+        let activeFileHashSignature = "EMPTY_STREAM_BUFFER";
+        let storedRosterFingerprint = "";
+
+        let localizedIsolatedDatabases = {
+            "Rukiga District Pool Network": [],
+            "Kampala Central Core Node": []
         };
 
-        let currentAdmin = null;
-        let isSupervisorAuthenticated = false;
-        let runningAvatarBuffer = "👤";
-        let currentGeneratedHash = "No File Seeded";
-        
-        let registeredFingerprintHash = ""; 
-        let matchDayScannedPrintHash = ""; 
-
-        let tenantDatabases = {
-            "Rukiga District Pool": [],
-            "Kampala Central Hub": []
-        };
-
-        let masterFederationAdminDatabase = [
+        let centralizedGlobalRepository = [
             {
-                uid: "ATH-849204",
-                name: "Asimwe Derick",
-                school: "Rukiga High School",
-                dob: "2009-03-14",
+                uid: "ATH-901248",
+                name: "ASIMWE DERICK",
+                school: "Rukiga High Command Academy",
+                dob: "2009-02-12",
                 division: "Under-15",
                 tier: "Tier-2 (Regional)",
                 avatar: "👤",
-                docHash: "SHA256-E9F2A1C4",
-                ageDetected: 17,
-                printHash: "FPRINT-RUK-49",
+                docHash: "SHA256-49A1F2C9",
+                ageCalculated: 17,
+                biometricHash: "BIO-SIG-8490",
                 status: "FLAGGED",
-                tenantSource: "Rukiga District Pool",
+                domainNode: "Rukiga District Pool Network",
                 lineups: ["Starter", "Starter", "Substitute", "Starter"]
             },
             {
-                uid: "ATH-302948",
-                name: "Amanya Joan",
-                school: "Muhanga Progress Academy",
-                dob: "1989-11-23",
+                uid: "ATH-109483",
+                name: "AMANYA JOAN",
+                school: "Muhanga Progress Base",
+                dob: "1988-11-20",
                 division: "Under-19",
                 tier: "Tier-1 (Elite)",
                 avatar: "👤",
-                docHash: "SHA256-4B8D10E2",
-                ageDetected: 37,
-                printHash: "FPRINT-RUK-88",
+                docHash: "SHA256-00B7E112",
+                ageCalculated: 37,
+                biometricHash: "BIO-SIG-3029",
                 status: "FLAGGED",
-                tenantSource: "Rukiga District Pool",
+                domainNode: "Rukiga District Pool Network",
                 lineups: ["Substitute", "Substitute", "Starter", "Substitute"]
             }
         ];
 
-        function executeTenantHandshake() {
-            const secret = document.getElementById('tenantSecretKey').value.trim();
-            if (AUTHORIZED_CRYPTO_TENANTS[secret]) {
-                currentAdmin = {
-                    key: secret,
-                    tenant: AUTHORIZED_CRYPTO_TENANTS[secret]
-                };
-                document.getElementById('adminAuthGateway').style.display = "none";
-                document.getElementById('masterOperationsBase').style.display = "block";
-                document.getElementById('identityBannerContext').innerHTML = `🌍 TERMINAL NODE: <span style="color:#fff;">${currentAdmin.tenant.toUpperCase()}</span>`;
+        function initializeHandshakeSync() {
+            const seed = document.getElementById('passkeyInputToken').value.trim();
+            if (DOMAIN_TENANT_SCHEMAS[seed]) {
+                activeWorkspaceContext = { key: seed, name: DOMAIN_TENANT_SCHEMAS[seed] };
+                document.getElementById('gatekeeperPanel').style.display = 'none';
+                document.getElementById('mainDashboardCore').style.display = 'block';
+                document.getElementById('activeDomainTag').innerHTML = `📡 CONNECTED CHANNELS: <span style="color:#fff;">${activeWorkspaceContext.name.toUpperCase()}</span>`;
                 
-                autoTrackDivision();
-                renderLocalLedgerGrid();
-                updateScreeningSelectors();
+                handleDynamicAgeCalculation();
+                populateLocalLedgerGrid();
+                rebuildFieldTerminalTargetDropdowns();
+                refreshGlobalMatrixTableRows();
             } else {
-                alert("🚨 SECURITY ALERT:\n\nCryptographic handshake aborted. Provided token structure does not map to recognized allocation frames.");
+                alert("❌ CRYPTOGRAPHIC ERROR:\n\nInvalid infrastructure authentication token provided. Terminal session isolated.");
             }
         }
 
-        function autoTrackDivision() {
-            const div = document.getElementById('pDivision').value;
-            document.getElementById('mirrorDivision').textContent = div + " Bracket Group";
+        function handleDynamicAgeCalculation() {
+            const targetDiv = document.getElementById('formDivision').value;
+            document.getElementById('hudDivisionTag').textContent = targetDiv.toUpperCase() + " BOUNDS";
         }
 
-        function processLocalAvatarBuffer(input) {
+        function extractDataURLBuffer(input) {
             if (input.files && input.files[0]) {
-                const file = input.files[0];
-                currentGeneratedHash = "SHA256-" + Math.random().toString(16).substring(2, 10).toUpperCase();
-                document.getElementById('mirrorHash').textContent = currentGeneratedHash;
+                activeFileHashSignature = "SHA256-" + Math.random().toString(16).substring(2, 10).toUpperCase() + "E9";
+                document.getElementById('hudHashDisplay').textContent = activeFileHashSignature;
 
                 const reader = new FileReader();
                 reader.onload = function(e) {
-                    runningAvatarBuffer = e.target.result;
-                    document.getElementById('avatarPreviewBox').innerHTML = `<img src="${runningAvatarBuffer}">`;
+                    runningImageStream64 = e.target.result;
+                    document.getElementById('hudImageContainer').innerHTML = `<img src="${runningImageStream64}"><div class="scan-overlay-line"></div>`;
                 };
-                reader.readAsDataURL(file);
+                reader.readAsDataURL(input.files[0]);
             }
         }
 
-        function triggerRegistrationFingerprintScan() {
-            const icon = document.getElementById('regPrintStatusIcon');
-            const text = document.getElementById('regPrintStatusText');
-            const hash = document.getElementById('regPrintHashDisplay');
-
-            icon.textContent = "⏳";
-            icon.classList.add('scanning');
-            text.innerText = "Analyzing Print Ridge Matrix...";
+        function captureMasterRegistrationPrint() {
+            const led = document.getElementById('hardwareLedStatus');
+            const label = document.getElementById('hardwareHashValue');
+            
+            led.style.color = "var(--warning-amber)";
+            label.innerText = "Querying device matrix frequencies...";
 
             setTimeout(() => {
-                icon.classList.remove('scanning');
-                registeredFingerprintHash = "BIO-HASH-" + Math.floor(100000 + Math.random() * 900000);
-                icon.textContent = "🟢";
-                text.innerText = "Fingerprint Secured";
-                hash.innerText = registeredFingerprintHash;
-            }, 1200);
+                led.style.color = "var(--neon-green)";
+                storedRosterFingerprint = "BIO-SIG-" + Math.floor(1000 + Math.random() * 9000);
+                label.innerText = "CAPTURED NODE: " + storedRosterFingerprint;
+            }, 1000);
         }
 
-        function registerBallerToMemory() {
-            if (!currentAdmin) return;
-            if (!registeredFingerprintHash) {
-                alert("❌ BIOMETRIC ESCALATION DENIED:\nYou must register and map a master fingerprint token block prior to roster submission.");
+        function commitProfileNode() {
+            if (!activeWorkspaceContext) return;
+            if (!storedRosterFingerprint) {
+                alert("❌ FRAMEWORK FAULT:\nYou must cycle the Biometric Scan procedure to cache structural parameters prior to asset commitment.");
                 return;
             }
 
-            const birthDate = new Date(document.getElementById('pDOB').value);
-            const today = new Date();
-            let calculatedAge = today.getFullYear() - birthDate.getFullYear();
-            const m = today.getMonth() - birthDate.getMonth();
-            if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
-                calculatedAge--;
+            const birthVal = new Date(document.getElementById('formDOB').value);
+            const currentEpoch = new Date();
+            let finalAge = currentEpoch.getFullYear() - birthVal.getFullYear();
+            const monthlyOffset = currentEpoch.getMonth() - birthVal.getMonth();
+            if (monthlyOffset < 0 || (monthlyOffset === 0 && currentEpoch.getDate() < birthVal.getDate())) {
+                finalAge--;
             }
 
-            const selectedDivision = document.getElementById('pDivision').value;
-            const absoluteAgeLimit = DIVISION_AGE_LIMITS[selectedDivision];
-            let determinationStatus = "PENDING";
-
-            if (calculatedAge > absoluteAgeLimit) {
-                determinationStatus = "FLAGGED";
+            const chosenDivision = document.getElementById('formDivision').value;
+            let safetyVerdict = "PENDING";
+            if (finalAge > DIVISION_LIMITS[chosenDivision]) {
+                safetyVerdict = "FLAGGED";
             }
 
-            const newPlayerNode = {
+            const profileNodeData = {
                 uid: "ATH-" + Math.floor(100000 + Math.random() * 900000),
-                name: document.getElementById('pName').value.trim(),
-                school: document.getElementById('pSchool').value.trim(),
-                dob: document.getElementById('pDOB').value,
-                division: selectedDivision,
-                tier: document.getElementById('pTier').value,
-                avatar: runningAvatarBuffer,
-                docHash: currentGeneratedHash,
-                ageDetected: calculatedAge,
-                printHash: registeredFingerprintHash,
-                status: determinationStatus,
-                tenantSource: currentAdmin.tenant,
+                name: document.getElementById('formName').value.trim().toUpperCase(),
+                school: document.getElementById('formSchool').value.trim().toUpperCase(),
+                dob: document.getElementById('formDOB').value,
+                division: chosenDivision,
+                tier: document.getElementById('formTier').value,
+                avatar: runningImageStream64,
+                docHash: activeFileHashSignature,
+                ageCalculated: finalAge,
+                biometricHash: storedRosterFingerprint,
+                status: safetyVerdict,
+                domainNode: activeWorkspaceContext.name,
                 lineups: [
-                    document.getElementById('pMatch1').value,
-                    document.getElementById('pMatch2').value,
-                    document.getElementById('pMatch3').value,
-                    document.getElementById('pMatch4').value
+                    document.getElementById('m1').value,
+                    document.getElementById('m2').value,
+                    document.getElementById('m3').value,
+                    document.getElementById('m4').value
                 ]
             };
 
-            tenantDatabases[currentAdmin.tenant].push(newPlayerNode);
-            alert(`🎉 SUCCESS:\nProfile structural profile for ${newPlayerNode.name} logged into isolated district storage.`);
+            localizedIsolatedDatabases[activeWorkspaceContext.name].push(profileNodeData);
+            alert(`⚡ MEMORY WRITE COMPLETED:\nNode package verified and cached inside district infrastructure frameworks.`);
             
-            // Reset input contexts
-            document.getElementById('playerEnrollmentForm').reset();
-            document.getElementById('mirrorName').textContent = "Awaiting Input";
-            document.getElementById('avatarPreviewBox').innerHTML = "<span>👤</span>";
-            document.getElementById('mirrorHash').textContent = "No File Seeded";
-            document.getElementById('regPrintStatusIcon').textContent = "🛑";
-            document.getElementById('regPrintStatusText').innerText = "Fingerprint Signature Missing";
-            document.getElementById('regPrintHashDisplay').innerText = "Awaiting master capture sequence...";
-            runningAvatarBuffer = "👤";
-            currentGeneratedHash = "No File Seeded";
-            registeredFingerprintHash = "";
+            document.getElementById('ingestionFormGroup').reset();
+            document.getElementById('hudNameMirror').textContent = "AWAITING SEED";
+            document.getElementById('hudImageContainer').innerHTML = "<span>👤</span><div class='scan-overlay-line'></div>";
+            document.getElementById('hudHashDisplay').textContent = "EMPTY_STREAM_BUFFER";
+            document.getElementById('hardwareLedStatus').style.color = "var(--alert-red)";
+            document.getElementById('hardwareHashValue').innerText = "Awaiting capture key trigger...";
+            runningImageStream64 = "👤";
+            activeFileHashSignature = "EMPTY_STREAM_BUFFER";
+            storedRosterFingerprint = "";
 
-            autoTrackDivision();
-            renderLocalLedgerGrid();
-            updateScreeningSelectors();
+            handleDynamicAgeCalculation();
+            populateLocalLedgerGrid();
+            rebuildFieldTerminalTargetDropdowns();
         }
 
-        function renderLocalLedgerGrid() {
-            const container = document.getElementById('adminMasterRosterDisplay');
-            container.innerHTML = "";
-            if (!currentAdmin) return;
+        function populateLocalLedgerGrid() {
+            const element = document.getElementById('districtRosterOutputGrid');
+            element.innerHTML = "";
+            if (!activeWorkspaceContext) return;
 
-            const records = tenantDatabases[currentAdmin.tenant];
-            if (records.length === 0) {
-                container.innerHTML = `<p style="color: var(--text-dimmed); font-size: 0.9rem; grid-column: 1/-1;">No localized candidate records registered within this tenant workspace frame yet.</p>`;
+            const systemRows = localizedIsolatedDatabases[activeWorkspaceContext.name];
+            if (systemRows.length === 0) {
+                element.innerHTML = `<p style="color:var(--text-dark); font-size:0.85rem; grid-column:1/-1;">// Isolated localized sector dataset channels remain empty currently.</p>`;
                 return;
             }
 
-            records.forEach(player => {
-                const card = document.createElement('div');
-                card.className = "player-identity-card";
+            systemRows.forEach(row => {
+                const innerBox = document.createElement('div');
+                innerBox.className = "grid-data-node";
+                let badgeClass = row.status === "FLAGGED" ? "badge-failed" : row.status === "VERIFIED" ? "badge-passed" : "badge-pending";
+                let mediaFrame = row.avatar.startsWith("data:") ? `<img src="${row.avatar}">` : `<span>${row.avatar}</span>`;
 
-                let imgStr = player.avatar.startsWith("data:") ? `<img src="${player.avatar}">` : `<span>${player.avatar}</span>`;
-                let statusClass = player.status === "FLAGGED" ? "status-flagged" : player.status === "VERIFIED" ? "status-verified" : "status-pending";
-
-                card.innerHTML = `
-                    <div class="player-card-photo">${imgStr}</div>
-                    <div class="player-card-details">
-                        <h4>${player.name}</h4>
-                        <p>🏫 ${player.school}</p>
-                        <p>🎂 Age: ${player.ageDetected} (${player.division})</p>
-                        <span class="status-pill ${statusClass}">${player.status}</span>
+                innerBox.innerHTML = `
+                    <div class="hud-avatar-frame" style="width:55px; height:55px; font-size:1.8rem; margin:0; border-radius:0;">${mediaFrame}</div>
+                    <div>
+                        <h4 style="font-size:0.9rem; color:#fff; font-weight:bold;">${row.name}</h4>
+                        <p style="font-size:0.75rem; color:var(--text-dark);">🏫 ${row.school}</p>
+                        <p style="font-size:0.75rem; color:var(--laser-blue); font-weight:bold;">🎂 CALCULATED AGE: ${row.ageCalculated} Yrs</p>
+                        <span class="cyber-badge ${badgeClass}" style="margin-top:5px; font-size:0.6rem; padding:2px 6px;">${row.status}</span>
                     </div>
                 `;
-                container.appendChild(card);
+                element.appendChild(innerBox);
             });
         }
 
-        function updateScreeningSelectors() {
-            const selector = document.getElementById('screeningTargetSelector');
-            selector.innerHTML = `<option value="">-- Choose Profile Node to Evaluate --</option>`;
-            if (!currentAdmin) return;
+        function rebuildFieldTerminalTargetDropdowns() {
+            const menu = document.getElementById('fieldTargetSelect');
+            menu.innerHTML = `<option value="">-- SYSTEM MANIFEST: CHOOSE EVALUATION CANDIDATE NODE --</option>`;
+            if (!activeWorkspaceContext) return;
 
-            tenantDatabases[currentAdmin.tenant].forEach(player => {
-                selector.innerHTML += `<option value="${player.uid}">${player.name} [ID: ${player.uid}]</option>`;
+            localizedIsolatedDatabases[activeWorkspaceContext.name].forEach(row => {
+                menu.innerHTML += `<option value="${row.uid}">${row.name} [METRIC TRACK ID: ${row.uid}]</option>`;
             });
         }
 
-        function runLiveScreeningAnalysis() {
-            const id = document.getElementById('screeningTargetSelector').value;
-            const terminal = document.getElementById('radarConsoleLog');
-            if (!id) {
-                terminal.innerText = "No profile actively loaded into scanning terminal matrix fields.";
-                return;
-            }
-
-            const athlete = tenantDatabases[currentAdmin.tenant].find(p => p.uid === id);
-            if (!athlete) return;
-
-            terminal.innerHTML = `
-> INITIALIZING TARGET COMPLIANCE SCAN FOR: ${athlete.name.toUpperCase()}
-> MATCH LEDGER BLOCK ID: ${athlete.uid}
-> DETECTED AGE PARAMETER: ${athlete.ageDetected} Years Old
-> DIVISION BOUNDS CHECK: ${athlete.division} Bracket (Limit: Under-${DIVISION_AGE_LIMITS[athlete.division]})
---------------------------------------------------------
-[ANALYSIS]: Calculated profile age variance is ${athlete.ageDetected > DIVISION_AGE_LIMITS[athlete.division] ? 'OUTSIDE' : 'WITHIN'} structural framework constraints.
-[BIOMETRICS]: Terminal checking state requires field token physical match check.
-            `;
-            
-            // Reset match scan state variables
-            document.getElementById('biometricPrintIcon').textContent = "🛑";
-            document.getElementById('biometricStatusText').innerText = "Hardware Offline — Click to Scan Field Print";
-            matchDayScannedPrintHash = "";
-        }
-
-        function triggerHardwareMatchDayFingerprintScan() {
-            const targetId = document.getElementById('screeningTargetSelector').value;
+        function loadTargetIntoTerminalConsole() {
+            const targetId = document.getElementById('fieldTargetSelect').value;
+            const logBox = document.getElementById('terminalLiveLog');
             if (!targetId) {
-                alert("Please select a target athlete to review prior to scanner processing.");
+                logBox.innerText = "Awaiting verification hardware selection framework. Terminal core idling...";
                 return;
             }
 
-            const athlete = tenantDatabases[currentAdmin.tenant].find(p => p.uid === targetId);
-            const icon = document.getElementById('biometricPrintIcon');
-            const statusText = document.getElementById('biometricStatusText');
-            const terminal = document.getElementById('radarConsoleLog');
+            const targetObj = localizedIsolatedDatabases[activeWorkspaceContext.name].find(p => p.uid === targetId);
+            if (!targetObj) return;
 
-            icon.textContent = "⏳";
-            icon.classList.add('scanning');
-            statusText.innerText = "Capturing Pitch-Side Fingerprint...";
+            logBox.innerHTML = `
+&gt;&gt; INITIALIZING TARGET ARRAY QUERY ON CORE HOOKS...
+&gt;&gt; TARGET MATRIX ASSIGNED TO LOGGED STRUCTURAL BLOCK ID: ${targetObj.uid}
+&gt;&gt; TEMPORAL DEVIATION READOUT: ${targetObj.ageCalculated} SOLAR YEARS
+&gt;&gt; ALLOCATED LIMIT PARAMS: Max Allowed ${DIVISION_LIMITS[targetObj.division]} Yrs (${targetObj.division})
+----------------------------------------------------------------------------------
+[METRIC LOG]: Age telemetry bounds validation reads: ${targetObj.ageCalculated > DIVISION_LIMITS[targetObj.division] ? 'COMPLIANCE VIOLATION DETECTED' : 'COMPLIANT BOUNDS ASSIGNED'}
+[BIOMETRIC]: Sensor telemetry array reads: FIELD DISCONNECT. Awaiting secondary biometric sequence execution...
+            `;
+
+            document.getElementById('fieldScannerGraphic').textContent = "🧬";
+            document.getElementById('fieldScannerGraphic').classList.remove('active-scanning-pulse');
+            document.getElementById('fieldScannerLabel').innerText = "FIELD HARDWARE DEPLOYED - TAP TO SCAN";
+            document.getElementById('fieldScannerLabel').style.color = "var(--laser-blue)";
+        }
+
+        function fireFieldHardwareMatchCheckSequence() {
+            const idVal = document.getElementById('fieldTargetSelect').value;
+            if (!idVal) {
+                alert("🚨 TERMINAL FAULT:\nLoad a candidate profile block into the console processor row before calling scanner hardware.");
+                return;
+            }
+
+            const userObj = localizedIsolatedDatabases[activeWorkspaceContext.name].find(p => p.uid === idVal);
+            const graphic = document.getElementById('fieldScannerGraphic');
+            const statusLabel = document.getElementById('fieldScannerLabel');
+            const logBox = document.getElementById('terminalLiveLog');
+
+            graphic.classList.add('active-scanning-pulse');
+            statusLabel.innerText = "CALIBRATING RESIDUAL MATRICES...";
+            statusLabel.style.color = "var(--warning-amber)";
 
             setTimeout(() => {
-                icon.classList.remove('scanning');
-                // Simulate correct match 80% of the time for verification flow demonstration
-                const generateCorrectMatch = Math.random() > 0.2;
-                matchDayScannedPrintHash = generateCorrectMatch ? athlete.printHash : "BIO-HASH-FRAUD-" + Math.floor(100000 + Math.random() * 900000);
-                
-                if (matchDayScannedPrintHash === athlete.printHash) {
-                    icon.textContent = "🟢";
-                    statusText.innerText = "Scan Verified Match!";
-                    terminal.innerHTML += `\n\n[SUCCESS] CRITICAL MATCH FOUND:\n> Field Token: ${matchDayScannedPrintHash}\n> Database Signature: ${athlete.printHash}\n> VERDICT: IDENTITY CONFIRMED.`;
+                graphic.classList.remove('active-scanning-pulse');
+                const triggerVeritablePass = Math.random() > 0.25; 
+                const pitchCapturedHash = triggerVeritablePass ? userObj.biometricHash : "BIO-SIG-FAIL-" + Math.floor(1000 + Math.random() * 9000);
+
+                if (pitchCapturedHash === userObj.biometricHash) {
+                    graphic.textContent = "🟢";
+                    statusLabel.innerText = "MATCH CONFIRMED KEY VERIFIED";
+                    statusLabel.style.color = "var(--neon-green)";
+                    logBox.innerHTML += `\n\n[SUCCESS CORE]: DATA HASH MATCH SECURED!\n&gt;&gt; Registry Key: ${userObj.biometricHash}\n&gt;&gt; Captured Field Key: ${pitchCapturedHash}\n&gt;&gt; DIAGNOSIS: TARGET IDENTITY POSITIVELY AUTHENTICATED.`;
                 } else {
-                    icon.textContent = "❌";
-                    statusText.innerText = "CRITICAL MISMATCH WARNING";
-                    terminal.innerHTML += `\n\n[🚨 ALARM] SPOOF DETECTED:\n> Scanned Token: ${matchDayScannedPrintHash}\n> Expected Registry Sign: ${athlete.printHash}\n> VERDICT: IMPERSONATION THREAT FLAGGED!`;
+                    graphic.textContent = "🔴";
+                    statusLabel.innerText = "SECURITY ALARM DETECTED SPOOF";
+                    statusLabel.style.color = "var(--alert-red)";
+                    logBox.innerHTML += `\n\n[🚨 ALARM CRISIS]: DATA HASH FAILURE DEVIATION DETECTED!\n&gt;&gt; Expected Registry Key: ${userObj.biometricHash}\n&gt;&gt; Raw Captured Field Key: ${pitchCapturedHash}\n&gt;&gt; DIAGNOSIS: HIGH IMPERSONATION THREAT FLAGGED.`;
                 }
-            }, 1500);
+            }, 1400);
         }
 
-        function executeScreeningVerdict(verdict) {
-            const targetId = document.getElementById('screeningTargetSelector').value;
-            if (!targetId) return;
+        function overrideFieldScreeningVerdict(verdict) {
+            const idVal = document.getElementById('fieldTargetSelect').value;
+            if (!idVal) return;
 
-            const athlete = tenantDatabases[currentAdmin.tenant].find(p => p.uid === targetId);
-            if (!athlete) return;
+            const candidate = localizedIsolatedDatabases[activeWorkspaceContext.name].find(p => p.uid === idVal);
+            if (!candidate) return;
 
-            athlete.status = verdict;
-            alert(`Evaluated node status updated successfully to: ${verdict}`);
+            candidate.status = verdict;
+            alert(`SYSTEM UPDATE MANIFEST:\nNode verification block manually adjusted to [${verdict}] criteria variables.`);
             
-            renderLocalLedgerGrid();
-            runLiveScreeningAnalysis();
-            if (isSupervisorAuthenticated) renderGlobalFederationTable();
+            populateLocalLedgerGrid();
+            loadTargetIntoTerminalConsole();
+            refreshGlobalMatrixTableRows();
         }
 
-        function uplinkRosterToCentralAdmin() {
-            if (!currentAdmin) return;
-            const localRoster = tenantDatabases[currentAdmin.tenant];
-            if (localRoster.length === 0) {
-                alert("Roster ledger allocation queue is currently empty. No data package elements found to sync.");
+        function uplinkLocalNodesToCentralDatabase() {
+            if (!activeWorkspaceContext) return;
+            const targetPacketArray = localizedIsolatedDatabases[activeWorkspaceContext.name];
+            if (targetPacketArray.length === 0) {
+                alert("Manifest buffer stream queue is vacant. No records mapped for sync operations.");
                 return;
             }
 
-            localRoster.forEach(localPlayer => {
-                const existingIndex = masterFederationAdminDatabase.findIndex(p => p.uid === localPlayer.uid);
-                if (existingIndex > -1) {
-                    masterFederationAdminDatabase[existingIndex] = { ...localPlayer };
+            targetPacketArray.forEach(localObj => {
+                const globalMatchIndex = centralizedGlobalRepository.findIndex(g => g.uid === localObj.uid);
+                if (globalMatchIndex > -1) {
+                    centralizedGlobalRepository[globalMatchIndex] = { ...localObj };
                 } else {
-                    masterFederationAdminDatabase.push({ ...localPlayer });
+                    centralizedGlobalRepository.push({ ...localObj });
                 }
             });
 
-            alert(`⚡ EDGE COUPLING COMPLETION:\nUplink complete. Synced and updated ledger nodes with Central Oversight Repository.`);
-            if (isSupervisorAuthenticated) renderGlobalFederationTable();
+            alert("⚡ PIPELINE EDGE TRANSACTION SUCCESS:\nLocal data structures unified globally to Federation core sheets.");
+            refreshGlobalMatrixTableRows();
         }
 
-        function unlockSupervisorOversightFeed() {
-            const pass = document.getElementById('supervisorKeyInput').value;
-            if (pass === "SUPERVISOR_OMNIPRESENT_2026") {
-                isSupervisorAuthenticated = true;
-                document.getElementById('supervisorLockContainer').style.display = "none";
-                document.getElementById('centralFederationAdminFeed').style.display = "table";
-                renderGlobalFederationTable();
-            } else {
-                alert("Decryption credential keys mapped improperly to supreme core tracking matrix data layers.");
-            }
-        }
+        function refreshGlobalMatrixTableRows() {
+            const tableBody = document.getElementById('globalFederationTableRows');
+            tableBody.innerHTML = "";
 
-        function renderGlobalFederationTable() {
-            const tbody = document.getElementById('federationTableBody');
-            tbody.innerHTML = "";
+            centralizedGlobalRepository.forEach(p => {
+                const rowElement = document.createElement('tr');
+                let badgeStyleClass = p.status === "FLAGGED" ? "badge-failed" : p.status === "VERIFIED" ? "badge-passed" : "badge-pending";
+                let iconMarkup = p.avatar.startsWith("data:") ? `<img src="${p.avatar}">` : `<span>${p.avatar}</span>`;
 
-            masterFederationAdminDatabase.forEach(p => {
-                const tr = document.createElement('tr');
-                let imgStr = p.avatar.startsWith("data:") ? `<img src="${p.avatar}">` : `<span>${p.avatar}</span>`;
-                let statusClass = p.status === "FLAGGED" ? "status-flagged" : p.status === "VERIFIED" ? "status-verified" : "status-pending";
-
-                let badgesMarkup = "";
-                p.lineups.forEach((l, i) => {
-                    badgesMarkup += `<span class="lineup-inline-badge">M${i+1}: ${l[0]}</span> `;
+                let streamMatrixLineupLabels = "";
+                p.lineups.forEach((l, idx) => {
+                    streamMatrixLineupLabels += `<span style="display:inline-block; font-size:0.65rem; background:#111c44; border:1px solid #1e2942; padding:2px 5px; color:var(--neon-cyan); margin-right:2px; margin-top:2px; font-weight:bold;">M${idx+1}: ${l[0]}</span>`;
                 });
 
-                tr.innerHTML = `
+                rowElement.innerHTML = `
                     <td>
-                        <div class="table-player-cell">
-                            <div class="table-player-avatar">${imgStr}</div>
+                        <div style="display:flex; align-items:center; gap:10px;">
+                            <div class="hud-avatar-frame" style="width:40px; height:40px; font-size:1.4rem; margin:0; border-radius:0;">${iconMarkup}</div>
                             <div>
-                                <strong style="color:#fff;">${p.name}</strong><br>
-                                <span style="font-size:0.75rem; color:var(--text-dimmed);">UID: ${p.uid}</span>
+                                <strong style="color:#fff; font-size:0.85rem;">${p.name}</strong><br>
+                                <span style="font-size:0.75rem; color:var(--text-dark);">ID: ${p.uid}</span>
                             </div>
                         </div>
                     </td>
+                    <td><span style="color:var(--warning-amber); font-weight:bold;">${p.school}</span></td>
+                    <td><span style="color:var(--laser-blue); font-size:0.85rem; font-weight:500;">${p.domainNode}</span></td>
                     <td>
-                        <span class="table-school-tag">${p.school}</span>
+                        <span style="color:#fff; font-weight:500;">${p.dob}</span><br>
+                        <span style="font-size:0.75rem; color:var(--text-dark);">System Calc: <strong style="color:var(--neon-cyan);">${p.ageCalculated} Yrs</strong></span>
+                        <div style="margin-top:3px;">${streamMatrixLineupLabels}</div>
                     </td>
-                    <td>
-                        <span style="color:var(--neon-blue); font-size:0.85rem;">${p.tenantSource}</span>
-                    </td>
-                    <td>
-                        <span class="table-timestamp">${p.dob}</span>
-                        <span class="table-district-badge">Calculated Age: <strong>${p.ageDetected} Yrs</strong></span>
-                        <div style="margin-top:4px;">${badgesMarkup}</div>
-                    </td>
-                    <td>
-                        <span class="status-pill ${statusClass}">${p.status}</span>
-                    </td>
+                    <td><span class="cyber-badge ${badgeStyleClass}">${p.status}</span></td>
                 `;
-                tbody.appendChild(tr);
+                tableBody.appendChild(rowElement);
             });
         }
 
-        function navigateViews(targetPanelId, activeBtnElement) {
-            document.querySelectorAll('.view-panel').forEach(panel => {
-                panel.classList.remove('active-view');
-            });
-            document.querySelectorAll('.nav-btn').forEach(btn => {
-                btn.classList.remove('active-tab');
-            });
+        function switchModuleView(targetViewModuleId, activeBtnContext) {
+            document.querySelectorAll('.command-module').forEach(m => m.classList.remove('module-active'));
+            document.querySelectorAll('.tab-trigger').forEach(b => b.classList.remove('active-node'));
 
-            document.getElementById(targetPanelId).classList.add('active-view');
-            activeBtnElement.classList.add('active-tab');
+            document.getElementById(targetViewModuleId).classList.add('module-active');
+            activeBtnContext.classList.add('active-node');
         }
     </script>
 </body>
