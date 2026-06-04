@@ -4,7 +4,7 @@
     <meta name="google-site-verification" content="dgmkMhfQ6U8FmPH26UVsxnu1VmGZFOB9r3f_3qzPCxU" />
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>INNOCENT Technologies - South Western Region Integrity Infrastructure</title>
+    <title>Tambuka Technologies - South Western Region Integrity Infrastructure</title>
     <style>
         /* ========================================== */
         /* CYBER SPORTS BRAND SYSTEM CONFIGURATION     */
@@ -242,7 +242,6 @@
                         <input type="text" id="admName" value="Regional Inspector" required>
                     </div>
                     
-                    <!-- EXCLUSIVELY MAPPED SOUTH WESTERN UGANDA DISTRICTS (WITH RUKIGA ADDED) -->
                     <div class="field-block">
                         <label>Active District Domain</label>
                         <select id="admTenant" style="width: 100%; font-weight: bold; color: var(--neon-blue);">
@@ -271,11 +270,10 @@
                         <input type="email" id="admEmail" value="security@tambuka.org" required>
                     </div>
                     
-                    <!-- HIGH-STAKES UNIQUE ACCESS PASSPHRASE DEPLOYMENT -->
                     <div class="field-block">
                         <label>Unique System Key Signature</label>
                         <input type="password" id="admPassword" placeholder="Requires Unique Competition Token" required>
-                        <span style="font-size: 0.68rem; color: var(--gold-amber);">🔒 Root Key: <code>2027</code></span>
+                        <span style="font-size: 0.68rem; color: var(--gold-amber);">🔒 Root Key: <code>TAMBUKA_SECURE_2026</code></span>
                     </div>
                 </div>
                 
@@ -395,11 +393,23 @@
                 </div>
             </div>
 
-            <!-- CENTRAL MASTER ADMIN SITE SIMULATION HUB -->
+            <!-- GATED RE-AUTHENTICATED MASTER OVERSIGHT PANEL -->
             <div class="glass-card" style="border: 1px solid #0369a1; background: #0b1322;">
                 <div class="card-title" style="color: var(--neon-blue);">📡 Master Competition Oversight Feed (Simulated Central Board)</div>
                 <p style="font-size: 0.85rem; color: var(--text-dimmed); margin-top: -10px;">Simulates global federation view receiving submissions from distinct districts concurrently.</p>
-                <div class="player-card-grid" id="centralFederationAdminFeed" style="margin-top: 15px;">
+                
+                <!-- Hidden protection gate layout state -->
+                <div id="supervisorLockContainer" style="background: #060a13; padding: 25px; border: 1px solid var(--panel-border); border-radius: 10px; text-align: center; max-width: 450px; margin: 20px auto;">
+                    <div style="font-size: 1.8rem; margin-bottom: 10px;">🔐</div>
+                    <h4 style="margin: 0 0 10px 0; color: #fff;">Oversight Stream Locked</h4>
+                    <p style="font-size: 0.8rem; color: var(--text-dimmed); margin-bottom: 15px;">Enter the Master Supervisor passphrase token to view combined multi-tenant streams.</p>
+                    <input type="password" id="supervisorKeyInput" placeholder="Enter Supervisor Password..." style="background: var(--bg-dark-input); border: 1px solid var(--panel-border); padding: 10px; border-radius: 6px; width: 100%; color: #fff; text-align: center; margin-bottom: 15px;">
+                    <button class="action-btn" style="padding: 10px 20px; font-size: 0.9rem;" onclick="unlockSupervisorOversightFeed()">Decrypt Master Stream 👁️</button>
+                    <div style="font-size: 0.65rem; color: var(--gold-amber); margin-top: 10px;">🔑 Exhibition Hint: <code>SUPERVISOR_OMNIPRESENT_2026</code></div>
+                </div>
+
+                <!-- Protected player card stream canvas layout -->
+                <div class="player-card-grid" id="centralFederationAdminFeed" style="margin-top: 15px; display: none;">
                     <div style="grid-column: 1/-1; text-align: center; color: var(--text-dimmed); padding: 15px;">No multi-tenant submissions stream received yet.</div>
                 </div>
             </div>
@@ -446,7 +456,6 @@
     <!-- SECURE INTERACTION JAVASCRIPT LAYER        -->
     <!-- ========================================== -->
     <script>
-        // Strictly isolated multi-tenant simulation databases dynamically allocated by district keys
         let tenantDatabases = {
             "Mbarara District": [
                 { uid: "ATH-882190", name: "Asimwe Francis", school: "Mbarara High School Node", dob: "2012-11-14", division: "U15", tier: "XI", avatar: "👤", docHash: "SHA256-8f3a1c9e88", ageDetected: 14, faceMatchScore: 99, printHash: "FPRINT-MBU-92", status: "PENDING" }
@@ -461,23 +470,19 @@
         };
 
         let masterFederationAdminDatabase = [];
-
-        const DIVISION_AGE_LIMITS = {
-            "U15": 15, "U17": 17, "U19": 19, "U20": 20
-        };
+        const DIVISION_AGE_LIMITS = { "U15": 15, "U17": 17, "U19": 19, "U20": 20 };
 
         let currentAdmin = null;
         let runningAvatarBuffer = "👤";
         let currentGeneratedHash = "No File Seeded";
         let biometricHardwareScanned = false;
+        let isSupervisorAuthenticated = false; // Persistent state toggle for global stream layout
 
         document.getElementById('pName').addEventListener('input', (e) => {
             document.getElementById('mirrorName').textContent = e.target.value || "Awaiting Input";
         });
 
-        function enforceDivisionAgeGuide() {
-            autoTrackDivision();
-        }
+        function enforceDivisionAgeGuide() { autoTrackDivision(); }
 
         function autoTrackDivision() {
             const dobValue = document.getElementById('pDOB').value;
@@ -521,13 +526,12 @@
             }
         }
 
-        // UNIQUE CRITICAL REGIONAL SECURITY PASSPHRASE AUTH CORE
         function commitAdminAccountCreation() {
             const enteredPassword = document.getElementById('admPassword').value;
             const MASTER_KEY_TARGET = "TAMBUKA_SECURE_2026";
 
             if (enteredPassword !== MASTER_KEY_TARGET) {
-                alert("🚨 SECURITY PROTOCOL VIOLATION:\n\nInvalid Cryptographic Signature Key! Random passwords or arbitrary characters are blocked by the system architecture.\n\nPlease type the authentic token: TAMBUKA_SECURE_2026");
+                alert("🚨 SECURITY PROTOCOL VIOLATION:\n\nInvalid Cryptographic Signature Key! Type the token: TAMBUKA_SECURE_2026");
                 return;
             }
 
@@ -634,7 +638,10 @@
                 viewport.appendChild(card);
             });
 
-            renderCentralFederationStreamDisplay();
+            // Re-render feed component matching active unlock state 
+            if (isSupervisorAuthenticated) {
+                renderCentralFederationStreamDisplay();
+            }
         }
 
         function uplinkRosterToCentralAdmin() {
@@ -654,8 +661,27 @@
                 }
             });
 
-            alert(`📡 DISTRICT STREAM UPLINK COMPLETE:\n\nSuccessfully piped ${counters} verified records from ${currentAdmin.tenant} directly to the Master Federation Oversight Feed.`);
+            alert(`📡 DISTRICT STREAM UPLINK COMPLETE:\n\nSuccessfully piped ${counters} records from ${currentAdmin.tenant} directly to the Master Federation Oversight Database.`);
             generateAdminDashboardLedgers();
+        }
+
+        /* ========================================== */
+        /* MASTER SECURITY STREAM DECRYPTION LOGIC     */
+        /* ========================================== */
+        function unlockSupervisorOversightFeed() {
+            const secretToken = document.getElementById('supervisorKeyInput').value;
+            const REAL_SUPERVISOR_KEY = "SUPERVISOR_OMNIPRESENT_2026";
+
+            if (secretToken !== REAL_SUPERVISOR_KEY) {
+                alert("🚨 SUPERVISOR GATEWAY ACCESS REFUSED:\n\nInvalid Cryptographic Signature! You do not have permissions to read master cross-tenant streams.");
+                return;
+            }
+
+            isSupervisorAuthenticated = true;
+            document.getElementById('supervisorLockContainer').style.display = "none";
+            document.getElementById('centralFederationAdminFeed').style.display = "grid";
+            
+            renderCentralFederationStreamDisplay();
         }
 
         function renderCentralFederationStreamDisplay() {
@@ -783,8 +809,7 @@
 
             if(finalVerdict === 'VERIFIED') {
                 if(player.ageDetected > allowedMaxAge || player.ageDetected > 20) {
-                    alert(`🚨 HARD LOCKOUT OVERRIDE TRIGGERED:\n\nVerification Refused! ${player.name} is ${player.ageDetected} years old. This explicitly violates the maximum division parameters (${allowedMaxAge} years). The system security mesh has dropped the transaction entry.`);
-                    
+                    alert(`🚨 HARD LOCKOUT OVERRIDE TRIGGERED:\n\nVerification Refused! Overaged entries cannot pass the validation security mesh.`);
                     player.status = "FLAGGED";
                     populateScreeningDropdownRouter();
                     return;
@@ -802,9 +827,7 @@
             populateScreeningDropdownRouter();
         }
 
-        window.onload = function() {
-            autoTrackDivision();
-        }
+        window.onload = function() { autoTrackDivision(); }
     </script>
 </body>
 </html>
